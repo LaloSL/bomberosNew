@@ -64,5 +64,31 @@ public class CuartelData {
 
 //---------------------------------------------------FIN AGREGAR--------------------------------------------------
     
+//-------------------------------------ELIMINAR CUARTEL------------------------------------------------------
+//---------------------cambiar estado de cuartel---------------------------------------
+    public void cambiarEstadoCuartel(int idCuartel) {
+        String sql = "UPDATE cuartel SET estadoC = 0 WHERE idCuartel = ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idCuartel);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Cuartel eliminado exitosamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cuartel.");
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cambiar el estado del cuartel: " + ex.getMessage());
+        }
+    }
+
+//---------------------------------------------------------------------------------
+
+//------------------------------------FIN ELIMINAR CUARTEL-----------------------------------------------    
+    
     
 }

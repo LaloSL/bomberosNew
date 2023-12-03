@@ -10,6 +10,13 @@ import bomberog5.accesoDatos.BrigadaData;
 import bomberog5.accesoDatos.Conexion;
 import bomberog5.accesoDatos.CuartelData;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,14 +25,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EliminarNew extends javax.swing.JInternalFrame {
 
-     private DefaultTableModel modelo = new DefaultTableModel(); //tabla cuartel
+    private DefaultTableModel modelo = new DefaultTableModel(); //tabla cuartel
     private DefaultTableModel modelo1 = new DefaultTableModel(); //tabla brigada
     private DefaultTableModel modelo2 = new DefaultTableModel(); //tabla bombero
     private CuartelData cua = new CuartelData();
     private BrigadaData briga = new BrigadaData();
     private BomberoData bomb = new BomberoData();
-    private Connection con = null; 
-    
+    private Connection con = null;
+    private int filaSeleccionadaBombero = -1;
+    private int filaSeleccionadaBrigada = -1;
+    private int filaSeleccionada = -1;
+
     public EliminarNew() {
         initComponents();
         inicio();
@@ -33,6 +43,38 @@ public class EliminarNew extends javax.swing.JInternalFrame {
         cabeceraBrigadal();
         cabeceraBombero();
         con = Conexion.getConexion();
+        //-----------------------bombero--------------------------------
+        jTBombero.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                filaSeleccionadaBombero = jTBombero.getSelectedRow();
+                if (filaSeleccionadaBombero != -1) {
+                    jTBombero.setEnabled(false);
+                }
+            }
+        });
+        //--------------------------brigada-------------------------------
+        jTBrigada.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                // Manejar el evento de selección de la tabla aquí
+                filaSeleccionadaBrigada = jTBrigada.getSelectedRow();
+                if (filaSeleccionadaBrigada != -1) {
+                    jTBrigada.setEnabled(false);
+                }
+            }
+        });
+
+        //---------------------------------------------------------------
+        //---------------cuartel-------------------------------------------------------------
+        jTCuartel.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                // Manejar el evento de selección de la tabla aquí
+                filaSeleccionada = jTCuartel.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    jTCuartel.setEnabled(false);
+                }
+            }
+        });
+        //-------------------------------------------------------
     }
 
     /**
@@ -45,9 +87,9 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButtonCuartel = new javax.swing.JRadioButton();
+        jRadioButtonBrigada = new javax.swing.JRadioButton();
+        jRadioButtonBombero = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -65,6 +107,24 @@ public class EliminarNew extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 102));
         jLabel2.setText("Formulario Eliminar");
+
+        jRadioButtonCuartel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonCuartelActionPerformed(evt);
+            }
+        });
+
+        jRadioButtonBrigada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonBrigadaActionPerformed(evt);
+            }
+        });
+
+        jRadioButtonBombero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonBomberoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cuartel");
 
@@ -112,12 +172,32 @@ public class EliminarNew extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(jTBombero);
 
         jBEliminarCua.setText("Eliminar Cuartel");
+        jBEliminarCua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarCuaActionPerformed(evt);
+            }
+        });
 
         jBEliminarBrig.setText("Eliminar Brigada");
+        jBEliminarBrig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarBrigActionPerformed(evt);
+            }
+        });
 
         jBEliminarBomb.setText("Eliminar Bombero");
+        jBEliminarBomb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarBombActionPerformed(evt);
+            }
+        });
 
         jSalir.setText("Salir");
+        jSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,15 +220,15 @@ public class EliminarNew extends javax.swing.JInternalFrame {
                         .addComponent(jSalir))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(jRadioButtonCuartel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addGap(218, 218, 218)
-                        .addComponent(jRadioButton2)
+                        .addComponent(jRadioButtonBrigada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addGap(215, 215, 215)
-                        .addComponent(jRadioButton3)
+                        .addComponent(jRadioButtonBombero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4))
                     .addComponent(jScrollPane2)
@@ -164,9 +244,9 @@ public class EliminarNew extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton3)
-                            .addComponent(jRadioButton2))
+                            .addComponent(jRadioButtonCuartel)
+                            .addComponent(jRadioButtonBombero)
+                            .addComponent(jRadioButtonBrigada))
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(jLabel4))
@@ -187,6 +267,72 @@ public class EliminarNew extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+//------------------------------------------------------ELIMINAR BOMBERO----------------------------------------
+    private void jRadioButtonBomberoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonBomberoActionPerformed
+        mostrarDatosBomberos();
+        mostrarDatosCuartel();
+        mostrarDatosBrigada();
+        radioButtonBombero();
+        desCuartel();
+        desBrigada();
+    }//GEN-LAST:event_jRadioButtonBomberoActionPerformed
+
+    private void jSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalirActionPerformed
+        dispose();
+    }//GEN-LAST:event_jSalirActionPerformed
+//---------------------boton eliminar bombero
+    private void jBEliminarBombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarBombActionPerformed
+        bomb.cambiarEstadoBombero(obtenerIdBomberoDesdeFilaSeleccionada());
+        mostrarDatosBomberos();
+        desBomberi();
+
+    }//GEN-LAST:event_jBEliminarBombActionPerformed
+//---------------------------------brigada---------------------------------------
+    private void jRadioButtonBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonBrigadaActionPerformed
+
+        mostrarDatosBomberos();
+        mostrarDatosCuartel();
+        mostrarDatosBrigada();
+        radiobuttonBrigada();
+        desCuartel();
+        desBomberi();
+
+    }//GEN-LAST:event_jRadioButtonBrigadaActionPerformed
+
+    //-----------------eliminar brigada---------------------------------
+    private void jBEliminarBrigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarBrigActionPerformed
+        int idBrigada = obtenerIdBrigadaDesdeFilaSeleccionada();
+        List<Integer> idsBomberosAEliminar = bomb.obtenerIDsBomberosPorBrigada(idBrigada);
+        bomb.cambiarEstadoBomberosPorBrigada(idBrigada);
+        briga.cambiarEstadoBrigada(idBrigada);
+        mostrarDatosBomberos();
+        mostrarDatosBrigada();
+        desBrigada();
+        desBotonBrigada();
+    }//GEN-LAST:event_jBEliminarBrigActionPerformed
+//--------------------------jradiobutton Cuartel--------------------------
+    private void jRadioButtonCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonCuartelActionPerformed
+        mostrarDatosBomberos();
+        mostrarDatosCuartel();
+        mostrarDatosBrigada();
+        radiobuttonCuartel();
+        desBomberi();
+        desBrigada();
+    }//GEN-LAST:event_jRadioButtonCuartelActionPerformed
+//----------------------------------jbutton Eliminar cuartel-------------------
+    private void jBEliminarCuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarCuaActionPerformed
+        int idCuartel = obtenerIdCuartel();
+        List<Integer> idsBrigadas = briga.obtenerIdsBrigadasPorIdCuartel(idCuartel);
+        bomb.eliminarBomberosPorIdsBrigadas(idsBrigadas);
+        briga.cambiarEstadoBrigadas(idsBrigadas);
+        cua.cambiarEstadoCuartel(idCuartel);
+        mostrarDatosBomberos();
+        mostrarDatosBrigada();
+        mostrarDatosCuartel();
+        desBrigada();
+        desBotonBrigada();
+        desCuartel();
+    }//GEN-LAST:event_jBEliminarCuaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -197,9 +343,9 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButtonBombero;
+    private javax.swing.JRadioButton jRadioButtonBrigada;
+    private javax.swing.JRadioButton jRadioButtonCuartel;
     private javax.swing.JButton jSalir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -209,33 +355,273 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTCuartel;
     // End of variables declaration//GEN-END:variables
 
-    
 //--------------------------------------------------------------METODOS--------------------------------------------------------
+    public void inicio() {
+        jRadioButtonCuartel.setEnabled(true);
+        jRadioButtonBrigada.setEnabled(true);
+        jRadioButtonBombero.setEnabled(true);
+        jSalir.setEnabled(true); // Asumiendo que este es el botón 'Salir'
 
-public void inicio() {
-    jRadioButton1.setEnabled(true);
-    jRadioButton2.setEnabled(true);
-    jRadioButton3.setEnabled(true);
-    jSalir.setEnabled(true); // Asumiendo que este es el botón 'Salir'
+        jBEliminarCua.setEnabled(false);
+        jBEliminarBrig.setEnabled(false);
+        jBEliminarBomb.setEnabled(false);
+        jLabel1.setEnabled(false);
+        jLabel2.setEnabled(false);
+        jLabel3.setEnabled(false);
+        jLabel4.setEnabled(false);
+        jScrollPane1.setEnabled(false);
+        jScrollPane2.setEnabled(false);
+        jScrollPane3.setEnabled(false);
+        jTBombero.setEnabled(false);
+        jTBrigada.setEnabled(false);
+        jTCuartel.setEnabled(false);
+    }
+//--------------------------------------------------------------------BOMBERO-----------------------------------------------------------
+//-------------------------------------jradiobutton bombero---------------------
 
-    jBEliminarCua.setEnabled(false);
-    jBEliminarBrig.setEnabled(false);
-    jBEliminarBomb.setEnabled(false);
-    jLabel1.setEnabled(false);
-    jLabel2.setEnabled(false);
-    jLabel3.setEnabled(false);
-    jLabel4.setEnabled(false);
-    jScrollPane1.setEnabled(false);
-    jScrollPane2.setEnabled(false);
-    jScrollPane3.setEnabled(false);
-    jTBombero.setEnabled(false);
-    jTBrigada.setEnabled(false);
-    jTCuartel.setEnabled(false);
-}
+    private void radioButtonBombero() {
+        jTBombero.setEnabled(true);
+        jTCuartel.setEnabled(true);
+        jTBrigada.setEnabled(true);
+        jBEliminarCua.setEnabled(false);
+        jBEliminarBrig.setEnabled(false);
+        jBEliminarBomb.setEnabled(true);
+        jSalir.setEnabled(true);
+    }
+//-------------------------------------jradiobutton bombero---------------------
+    //-------------------LLena la tabla JCuartel-----------------------
 
+    public void mostrarDatosCuartel() {
+        DefaultTableModel tcuar = new DefaultTableModel();
+        tcuar.addColumn("IdCuartel");
+        tcuar.addColumn("Nombre del cuartel");
+        tcuar.addColumn("Direccion");
+        tcuar.addColumn("Longitud");
+        tcuar.addColumn("Latitud");
+        tcuar.addColumn("Telefono");
+        tcuar.addColumn("Correo");
+        jTCuartel.setModel(tcuar);
 
+        try {
+            // Suponiendo que 'con' es tu conexión a la base de datos
+            String consulta = "SELECT `idCuartel`, `nombreCuartel`, `direccion`, `longitud`, `latitud`, `telefono`, `correo` FROM `cuartel` WHERE `estadoC` = 1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getInt("idCuartel"),
+                    rs.getString("nombreCuartel"),
+                    rs.getString("direccion"),
+                    rs.getDouble("longitud"), // Cambié a double ya que podría ser un valor decimal
+                    rs.getDouble("latitud"), // Cambié a double
+                    rs.getString("telefono"),
+                    rs.getString("correo")
+                };
+                tcuar.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+    }
+
+    //-------------------Fin LLena la tabla JCuartel ------------------------
+    //-------------------LLena la tabla Jbrigada-----------------------
+    public void mostrarDatosBrigada() {
+        DefaultTableModel tbrigad = new DefaultTableModel();
+        tbrigad.addColumn("IdBrigada");
+        tbrigad.addColumn("Nombre de la brigada");
+        tbrigad.addColumn("Especialidad");
+        tbrigad.addColumn("Libre/Ocupada");
+        tbrigad.addColumn("IdCuartel");
+        jTBrigada.setModel(tbrigad);
+
+        try {
+            // Suponiendo que 'con' es tu conexión a la base de datos
+            String consulta = "SELECT `idBrigada`, `nombreBrig`, `especialidad`, `libre`, `idCuartel`FROM `brigada` WHERE `estadoBr`=1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getInt("idBrigada"),
+                    rs.getString("nombreBrig"),
+                    rs.getString("especialidad"),
+                    rs.getInt("libre"), // Cambié a double ya que podría ser un valor decimal
+                    rs.getInt("idCuartel"), // Cambié a double
+                };
+                tbrigad.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+    }
+
+    //-------------------Fin LLena la tabla Jbrigada ------------------------  
+    //--------------------dehabilita jcuartel------------------------------
+    private void desCuartel() {
+        jTCuartel.setEnabled(false);
+    }
+
+//--------------------fin dehabilita jcuartel--------------------------    
+    //--------------------dehabilita jbrigada------------------------------
+    private void desBrigada() {
+        jTBrigada.setEnabled(false);
+    }
+
+//--------------------fin dehabilita jcuartel--------------------------  
+    //--------------------dehabilita jcuartel------------------------------
+    private void desBomberi() {
+        jTBombero.setEnabled(false);
+    }
+
+//--------------------fin dehabilita jcuartel--------------------------  
+//-------------------LLena la tabla Jbombero-----------------------
+    public void mostrarDatosBomberos() {
+        DefaultTableModel tbomber = new DefaultTableModel();
+        tbomber.addColumn("IdBombero");
+        tbomber.addColumn("DNI");
+        tbomber.addColumn("Nombre y Apellido");
+        tbomber.addColumn("Grupo Sanguineo");
+        tbomber.addColumn("Fecha Nacimiento");
+        tbomber.addColumn("Celular");
+        tbomber.addColumn("IdBrigada");
+        jTBombero.setModel(tbomber);
+
+        try {
+            String consulta = "SELECT `idBombero`, `dni`, `nombreApellido`, `grupoSanguineo`, `fechaNac`, `celular`, `idBrigada` FROM `bombero` WHERE `estadoB`=1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                // Formatear la fecha de nacimiento
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaNacFormateada = dateFormat.format(rs.getDate("fechaNac"));
+
+                // Agregar la fila a la tabla
+                Object[] fila = {
+                    rs.getInt("idBombero"),
+                    rs.getString("dni"),
+                    rs.getString("nombreApellido"),
+                    rs.getString("grupoSanguineo"),
+                    fechaNacFormateada,
+                    rs.getString("celular"),
+                    rs.getInt("idBrigada")
+                };
+                tbomber.addRow(fila);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+    }
+
+    //-------------------Fin LLena la tabla Jbombero------------------------ 
+    //-----------------idBombero de la fila seleccionada------------------
+    private int obtenerIdBomberoDesdeFilaSeleccionada() {
+        int idBombero = -1;
+
+        if (filaSeleccionadaBombero != -1) {
+            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla
+            Object idBomberoObj = jTBombero.getValueAt(filaSeleccionadaBombero, 0);
+
+            if (idBomberoObj instanceof Integer) {
+                idBombero = (int) idBomberoObj;
+            }
+        }
+        System.out.println("idBombero " + idBombero);
+        return idBombero;
+    }
+    //-----------------idBombero de la fila seleccionada------------------
+
+//--------------------------------------------------------------------FIN BOMBERO-----------------------------------------------------------    
+//---------------------------------------------------------------------BRIGADA------------------------------------------------------------
+    public void radiobuttonBrigada() {
+        jRadioButtonCuartel.setEnabled(false);
+        jRadioButtonBrigada.setEnabled(true);
+        jRadioButtonBombero.setEnabled(false);
+        jSalir.setEnabled(true);
+
+        jBEliminarCua.setEnabled(false);
+        jBEliminarBrig.setEnabled(true);
+        jBEliminarBomb.setEnabled(false);
+        jLabel1.setEnabled(false);
+        jLabel2.setEnabled(false);
+        jLabel3.setEnabled(false);
+        jLabel4.setEnabled(false);
+        jScrollPane1.setEnabled(false);
+        jScrollPane2.setEnabled(false);
+        jScrollPane3.setEnabled(false);
+        jTBombero.setEnabled(true);
+        jTBrigada.setEnabled(true);
+        jTCuartel.setEnabled(true);
+    }
+
+    //--------------------------idBrigada de la fila seleccionada---------------------------  
+    private int obtenerIdBrigadaDesdeFilaSeleccionada() {
+        int idBrigada = -1;
+
+        if (filaSeleccionadaBrigada != -1) {
+            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla de brigadas
+            Object idBrigadaObj = jTBrigada.getValueAt(filaSeleccionadaBrigada, 0);
+
+            if (idBrigadaObj instanceof Integer) {
+                idBrigada = (int) idBrigadaObj;
+            }
+        }
+        return idBrigada;
+    }
+    //--------------------------fin idBrigada de la fila seleccionada---------------------------  
+
+    //--------------------dehabilita jbuttonEliminar Brigada------------------------------
+    private void desBotonBrigada() {
+        jBEliminarBrig.setEnabled(false);
+    }
+
+//--------------------fin dehabilita jcuartel--------------------------   
+//--------------------------------------------------------------------FIN BRIGADA----------------------------------------------------------    
+//-----------------------------------------------------------------CUARTEL--------------------------------------------------
+    public void radiobuttonCuartel() {
+        jRadioButtonCuartel.setEnabled(true);
+        jRadioButtonBrigada.setEnabled(false);
+        jRadioButtonBombero.setEnabled(false);
+        jSalir.setEnabled(true);
+
+        jBEliminarCua.setEnabled(true);
+        jBEliminarBrig.setEnabled(false);
+        jBEliminarBomb.setEnabled(false);
+        jLabel1.setEnabled(false);
+        jLabel2.setEnabled(false);
+        jLabel3.setEnabled(false);
+        jLabel4.setEnabled(false);
+        jScrollPane1.setEnabled(false);
+        jScrollPane2.setEnabled(false);
+        jScrollPane3.setEnabled(false);
+        jTBombero.setEnabled(true);
+        jTBrigada.setEnabled(true);
+        jTCuartel.setEnabled(true);
+    }
+//--------------------------------obtiene idCuartel de la fila seleccionada-----------------------------------------------
+
+    private int obtenerIdCuartel() {
+        int idCuartel = -1;
+
+        if (filaSeleccionada != -1) {
+            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla de cuarteles
+            Object idCuartelObj = jTCuartel.getValueAt(filaSeleccionada, 0);
+
+            if (idCuartelObj instanceof Integer) {
+                idCuartel = (int) idCuartelObj;
+            }
+        }
+        return idCuartel;
+    }
+
+//----------------------------------------------------------------FIN CUARTEL------------------------------------------------    
 //-------------------------------------------------------------------------------------------------------------------------------    
-    
 //--------------------------CABECERAS--------------------------------------------
 //----------------------------------------------cabecera tabla cuartel------------------------------------------------
     private void cabeceraCuartel() {
@@ -275,5 +661,4 @@ public void inicio() {
 
 //----------------------------------------------fin cabecera tabla bombero------------------------------------------------     
 //-----------------------------FIN CABECERA--------------------------------------   
-    
 }
