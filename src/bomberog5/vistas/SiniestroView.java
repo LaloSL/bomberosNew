@@ -264,6 +264,9 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
     private void jBGuardarSiniestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarSiniestroActionPerformed
         
+        String tipo = (String) jCTipo.getSelectedItem();
+        
+        
     }//GEN-LAST:event_jBGuardarSiniestroActionPerformed
     private void llenarComboEspecialidades() {
         String[] especialidades = briga.Especialidades();
