@@ -29,8 +29,8 @@ public class SiniestroData {
 
     //------------------------GUARDAR SINIESTRO-----------------------------
     public void insertarSiniestro(String tipo, Date fechaSiniestro, String horaSiniestro, String minutos, int latitud, int longitud, String detalles) throws SQLException {
-        String consulta = "INSERT INTO siniestro (tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String consulta = "INSERT INTO siniestro (tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles, estadoS) "
+                + "VALUES (?, ?, ?, ?, ?, ?, 1)";
 
         try (PreparedStatement ps = con.prepareStatement(consulta)) {
             ps.setString(1, tipo);
@@ -39,6 +39,7 @@ public class SiniestroData {
             ps.setInt(4, latitud);
             ps.setInt(5, longitud);
             ps.setString(6, detalles);
+            //ps.setBoolean(7, true);
 
           
 

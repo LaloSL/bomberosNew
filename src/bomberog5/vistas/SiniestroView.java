@@ -9,6 +9,8 @@ import bomberog5.accesoDatos.BrigadaData;
 import bomberog5.accesoDatos.SiniestroData;
 import bomberog5.accesoDatos.Conexion;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,6 +29,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private BrigadaData briga = new BrigadaData();
     private SiniestroData sin = new SiniestroData();
     private Connection con = null;
+    private DefaultTableModel SinAct = new DefaultTableModel();
 
     /**
      * Creates new form Siniestro
@@ -33,7 +37,10 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     public SiniestroView() {
         initComponents();
         llenarComboEspecialidades();
+        
+        cabeceraSiniestroActivos();
         con = Conexion.getConexion();
+        llenarTablaSiniestrosActivos();
     }
 
     /**
@@ -59,7 +66,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         jBGuardarSiniestro = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTSinAct = new javax.swing.JTable();
         jCTipo = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -93,7 +100,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Brigadas Disponibles");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTSinAct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -104,7 +111,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTSinAct);
 
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jCTipo.addActionListener(new java.awt.event.ActionListener() {
@@ -161,17 +168,16 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel1)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jCTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(128, 128, 128)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jBSalir)
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(212, 212, 212))))
+                                    .addComponent(jBSalir)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(212, 212, 212))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jCTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(128, 128, 128)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -290,9 +296,8 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         int latitud = Integer.parseInt(jTLatitud.getText());
         int longitud = Integer.parseInt(jTLongitud.getText());
         String detalle = jTDetalles.getText();
-      java.util.Date utilDate = jDFechaSiniestro.getDate();
+        java.util.Date utilDate = jDFechaSiniestro.getDate();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
 
         try {
             sin.insertarSiniestro(tipo, sqlDate, hora, min, latitud, longitud, detalle);
@@ -312,6 +317,51 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private void llenarComboEspecialidades() {
         String[] especialidades = briga.Especialidades();
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(especialidades));
+    }
+
+    public void llenarTablaSiniestrosActivos() {
+        DefaultTableModel tSin = new DefaultTableModel();
+        tSin.addColumn("Tipo");
+        tSin.addColumn("Fecha");
+        tSin.addColumn("Hora");
+        tSin.addColumn("CoordX");
+        tSin.addColumn("CoordY");
+        tSin.addColumn("Detalles");
+        jTSinAct.setModel(tSin);
+
+        try {
+
+            String consulta = "SELECT tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("tipo"),
+                    rs.getDate("fechaSiniestro"),
+                    rs.getTime("horaSiniestro"),
+                    rs.getInt("coordx"),
+                    rs.getInt("coordY"),
+                    rs.getString("detalles")
+
+                };
+                tSin.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+    }
+
+    private void cabeceraSiniestroActivos() {
+        SinAct.addColumn("Tipo");
+        SinAct.addColumn("Fecha Siniestro");
+        SinAct.addColumn("Hora Siniestro");
+        SinAct.addColumn("Latitud");
+        SinAct.addColumn("Longitud");
+        SinAct.addColumn("Detalles");
+        jTSinAct.setModel(SinAct);
     }
 
 
@@ -338,7 +388,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTLatitud;
     private javax.swing.JTextField jTLongitud;
     private javax.swing.JTextField jTMinutos;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTSinAct;
     private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
