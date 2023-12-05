@@ -5,151 +5,43 @@
  */
 package bomberog5.accesoDatos;
 
-import bomberog5.entidades.Brigada;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
 
 /**
  *
  * @author Asus
  */
 public class SiniestroData {
-    private int idCodigo;
-    private String tipo;
-    private int coordX;
-    private int coordY;
-    private String detalles;
-    private int puntuacion;
-    private Brigada idBrigada;
-    private LocalDateTime fechaSiniestro;
-    private LocalDateTime fechaResol;
-    private int idBriga;
-
-    public SiniestroData() {
-    }
-
-    public SiniestroData(int idCodigo, String tipo, int coordX, int coordY, String detalles, int puntuacion, Brigada idBrigada, LocalDateTime fechaSiniestro, LocalDateTime fechaResol) {
-        this.idCodigo = idCodigo;
-        this.tipo = tipo;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.detalles = detalles;
-        this.puntuacion = puntuacion;
-        this.idBrigada = idBrigada;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
-    }
-
-    public SiniestroData(String tipo, int coordX, int coordY, String detalles, int puntuacion, Brigada idBrigada, LocalDateTime fechaSiniestro, LocalDateTime fechaResol) {
-        this.tipo = tipo;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.detalles = detalles;
-        this.puntuacion = puntuacion;
-        this.idBrigada = idBrigada;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
-    }
+     private Connection con = null;
     
-//--------------------------- Sin idCodigo ni objeto Birgada y con int int idBriga-----------------------------------
-    
-   public SiniestroData(String tipo, int coordX, int coordY, String detalles, int puntuacion, LocalDateTime fechaSiniestro, LocalDateTime fechaResol, int idBriga) {
-        this.tipo = tipo;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.detalles = detalles;
-        this.puntuacion = puntuacion;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
-        this.idBriga = idBriga;
-    }  
-    
-//---------------------------FIN Sin idCodigo ni objeto Birgada y con int int idBriga-----------------------------------
+    //------------------------GUARDAR SINIESTRO-----------------------------
+    public void insertarSiniestro(String tipo, LocalDateTime fechaHoraSiniestro, int coordx, int coordy, String detalles) throws SQLException {
+    String consulta = "INSERT INTO siniestro (tipo, fechaSiniestro, coordx, coordy, detalles) "
+            + "VALUES (?, ?, ?, ?, ?)"; 
 
-    public int getIdCodigo() {
-        return idCodigo;
-    }
+    try (PreparedStatement statement = con.prepareStatement(consulta)) {
+        statement.setString(1, tipo);
+        statement.setTimestamp(2, Timestamp.valueOf(fechaHoraSiniestro));
+        statement.setInt(3, coordx);
+        statement.setInt(4, coordy);
+        statement.setString(5, detalles);
+        
 
-    public void setIdCodigo(int idCodigo) {
-        this.idCodigo = idCodigo;
-    }
+        int filasAfectadas = statement.executeUpdate();
 
-    public String getTipo() {
-        return tipo;
+        if (filasAfectadas > 0) {
+            System.out.println("Siniestro registrado con éxito.");
+        } else {
+            System.out.println("No se registró ningún siniestro.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Error al insertar el siniestro en la base de datos.");
     }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public int getCoordX() {
-        return coordX;
-    }
-
-    public void setCoordX(int coordX) {
-        this.coordX = coordX;
-    }
-
-    public int getCoordY() {
-        return coordY;
-    }
-
-    public void setCoordY(int coordY) {
-        this.coordY = coordY;
-    }
-
-    public String getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(String detalles) {
-        this.detalles = detalles;
-    }
-
-    public int getPuntuacion() {
-        return puntuacion;
-    }
-
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
-    }
-
-    public Brigada getIdBrigada() {
-        return idBrigada;
-    }
-
-    public void setIdBrigada(Brigada idBrigada) {
-        this.idBrigada = idBrigada;
-    }
-
-    public LocalDateTime getFechaSiniestro() {
-        return fechaSiniestro;
-    }
-
-    public void setFechaSiniestro(LocalDateTime fechaSiniestro) {
-        this.fechaSiniestro = fechaSiniestro;
-    }
-
-    public LocalDateTime getFechaResol() {
-        return fechaResol;
-    }
-
-    public void setFechaResol(LocalDateTime fechaResol) {
-        this.fechaResol = fechaResol;
-    }
-
-    public int getIdBriga() {
-        return idBriga;
-    }
-
-    public void setIdBriga(int idBriga) {
-        this.idBriga = idBriga;
-    }
-
-    @Override
-    public String toString() {
-        return "SiniestroData{" + "idCodigo=" + idCodigo + ", tipo=" + tipo + ", coordX=" + coordX + ", coordY=" + coordY + ", detalles=" + detalles + ", puntuacion=" + puntuacion + ", idBrigada=" + idBrigada + ", fechaSiniestro=" + fechaSiniestro + ", fechaResol=" + fechaResol + ", idBriga=" + idBriga + '}';
-    }
-   
-   
-   
+}
 }

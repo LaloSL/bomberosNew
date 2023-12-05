@@ -19,7 +19,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setSize(2000, 2000);
+        this.setSize(1000, 1000);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Menu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMCargarSiniestro = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenuItem5.setText("jMenuItem5");
@@ -106,9 +106,19 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Siniestro");
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu4ActionPerformed(evt);
+            }
+        });
 
-        jMenuItem1.setText("Cargar Siniestro");
-        jMenu4.add(jMenuItem1);
+        jMCargarSiniestro.setText("Cargar Siniestro");
+        jMCargarSiniestro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMCargarSiniestroActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMCargarSiniestro);
 
         jMenuItem2.setText("Resolver Siniestro");
         jMenu4.add(jMenuItem2);
@@ -132,13 +142,13 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        
+
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         escritorio.removeAll();
         escritorio.repaint();
-        AgregarView agr = new  AgregarView();
+        AgregarView agr = new AgregarView();
         agr.setVisible(true);
         agr.getContentPane().setBackground(new Color(86, 167, 132));
         escritorio.add(agr);
@@ -147,24 +157,37 @@ public class Menu extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         escritorio.removeAll();
         escritorio.repaint();
-        ModificarView mo= new ModificarView();
+        ModificarView mo = new ModificarView();
         mo.setVisible(true);
         mo.getContentPane().setBackground(new Color(86, 167, 132));
         escritorio.add(mo);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-     
+
     }//GEN-LAST:event_jMenu3ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-       escritorio.removeAll();
+        escritorio.removeAll();
         escritorio.repaint();
-        EliminarNew el= new EliminarNew();
+        EliminarNew el = new EliminarNew();
         el.setVisible(true);
         el.getContentPane().setBackground(new Color(86, 167, 132));
         escritorio.add(el);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
+        
+    }//GEN-LAST:event_jMenu4ActionPerformed
+
+    private void jMCargarSiniestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMCargarSiniestroActionPerformed
+        escritorio.removeAll();
+        escritorio.repaint();
+        SiniestroView si = new SiniestroView();
+        si.setVisible(true);
+        si.getContentPane().setBackground(new Color(86, 167, 132));
+        escritorio.add(si);
+    }//GEN-LAST:event_jMCargarSiniestroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,12 +226,12 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenuItem jMCargarSiniestro;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
