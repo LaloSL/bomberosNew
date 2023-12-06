@@ -121,6 +121,11 @@ public class Menu extends javax.swing.JFrame {
         jMenu4.add(jMCargarSiniestro);
 
         jMenuItem2.setText("Resolver Siniestro");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem2);
 
         jMenuBar1.add(jMenu4);
@@ -188,6 +193,15 @@ public class Menu extends javax.swing.JFrame {
         si.getContentPane().setBackground(new Color(86, 167, 132));
         escritorio.add(si);
     }//GEN-LAST:event_jMCargarSiniestroActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        escritorio.removeAll();
+        escritorio.repaint();
+        ResolucionSiniestrosView res = new ResolucionSiniestrosView();
+        res.setVisible(true);
+        res.getContentPane().setBackground(new Color(86, 167, 132));
+        escritorio.add(res);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments

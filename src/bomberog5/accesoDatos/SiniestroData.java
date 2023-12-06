@@ -9,11 +9,15 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 /**
  *
@@ -61,4 +65,46 @@ public class SiniestroData {
 //    Time time = new Time(formato.parse(hora + ":" + minutos).getTime());
 //    return new Date(time.getTime());
 //}
+    
+    
+    public void actualizarSiniestro(Date fechaResol, String horaSiniestro, String minutos, int puntuacion) throws SQLException {
+        
+        String consulta = "UPDATE siniestro SET fechaReso = ?, horaSiniestro = ?, minutos = ?, puntuacion = ?, estadoS = 0 WEHERE id = ?";
+                
+
+        try (PreparedStatement ps = con.prepareStatement(consulta)) {
+            LocalDate localDate = fechaResol.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            ps.setDate(1, java.sql.Date.valueOf(localDate));
+            LocalTime localTime = LocalTime.parse(horaSiniestro + ":" + minutos);
+            ps.setTime(2, Time.valueOf(localTime));
+            ps.setInt(3, puntuacion);
+            
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Siniestro registrado con éxito.");
+            } else {
+                System.out.println("No se registró ningún siniestro.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error al insertar el siniestro en la base de datos.");
+        }
+    }
+    
+    public String[] Puntuacion() {
+        return new String[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+            
+        };
+    }
+    
+    
+    
 }
+

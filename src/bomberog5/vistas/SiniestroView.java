@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Level;
@@ -37,8 +38,8 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     public SiniestroView() {
         initComponents();
         llenarComboEspecialidades();
+
         
-        cabeceraSiniestroActivos();
         con = Conexion.getConexion();
         llenarTablaSiniestrosActivos();
     }
@@ -289,7 +290,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private void jBGuardarSiniestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarSiniestroActionPerformed
 
         String tipo = (String) jCTipo.getSelectedItem();
-//        Date fechaSiniestro = jDFechaSiniestro.getDate();
+        //Date fechaSiniestro = jDFechaSiniestro.getDate();
         String hs = jTHora.getText();
         String min = jTMinutos.getText();
         String hora = hs + ":" + min;
@@ -304,6 +305,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SiniestroView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
         JOptionPane.showMessageDialog(
                 null, "Siniestro registrado correctamente.");
@@ -334,11 +336,12 @@ public class SiniestroView extends javax.swing.JInternalFrame {
             String consulta = "SELECT tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
                 Object[] fila = {
                     rs.getString("tipo"),
-                    rs.getDate("fechaSiniestro"),
+                    fecha.format(rs.getDate("fechaSiniestro")),
                     rs.getTime("horaSiniestro"),
                     rs.getInt("coordx"),
                     rs.getInt("coordY"),
@@ -354,15 +357,15 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cabeceraSiniestroActivos() {
-        SinAct.addColumn("Tipo");
-        SinAct.addColumn("Fecha Siniestro");
-        SinAct.addColumn("Hora Siniestro");
-        SinAct.addColumn("Latitud");
-        SinAct.addColumn("Longitud");
-        SinAct.addColumn("Detalles");
-        jTSinAct.setModel(SinAct);
-    }
+//    private void cabeceraSiniestroActivos() {
+//        SinAct.addColumn("Tipo");
+//        SinAct.addColumn("Fecha Siniestro");
+//        SinAct.addColumn("Hora Siniestro");
+//        SinAct.addColumn("Latitud");
+//        SinAct.addColumn("Longitud");
+//        SinAct.addColumn("Detalles");
+//        jTSinAct.setModel(SinAct);
+//    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
