@@ -8,6 +8,7 @@ package bomberog5.vistas;
 import bomberog5.accesoDatos.BrigadaData;
 import bomberog5.accesoDatos.SiniestroData;
 import bomberog5.accesoDatos.Conexion;
+import bomberog5.accesoDatos.CuartelData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
     private BrigadaData briga = new BrigadaData();
     private SiniestroData sin = new SiniestroData();
+    private CuartelData cua = new CuartelData();
     private Connection con = null;
     private DefaultTableModel SinAct = new DefaultTableModel();
 
@@ -39,7 +41,6 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         initComponents();
         llenarComboEspecialidades();
 
-        
         con = Conexion.getConexion();
         llenarTablaSiniestrosActivos();
     }
@@ -71,12 +72,13 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         jCTipo = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTBrigada = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jBSalir = new javax.swing.JButton();
         jTMinutos = new javax.swing.JTextField();
         jTLongitud = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText("Agregar Siniestro");
 
@@ -123,7 +125,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Siniestros Activos");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTBrigada.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -134,7 +136,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jTBrigada);
 
         jButton2.setText("Asignar Brigada");
 
@@ -153,6 +155,13 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         jLabel6.setText(":");
 
+        jButton1.setText("Calcular Distancia");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,8 +179,13 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jBSalir)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jBSalir))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(212, 212, 212))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -208,11 +222,8 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel10))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(66, 66, 66)
-                                .addComponent(jLabel9))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(jButton2)))
-                        .addGap(338, 338, 338))
+                                .addComponent(jLabel9)))
+                        .addGap(368, 368, 368))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -272,8 +283,9 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
-                            .addComponent(jBSalir))))
-                .addContainerGap(69, Short.MAX_VALUE))
+                            .addComponent(jBSalir)
+                            .addComponent(jButton1))))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         pack();
@@ -305,7 +317,6 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SiniestroView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
 
         JOptionPane.showMessageDialog(
                 null, "Siniestro registrado correctamente.");
@@ -316,6 +327,17 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private void jTLongitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTLongitudActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTLongitudActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+                                                
+        double latitudSiniestro = Double.parseDouble(jTLatitud.getText());
+        double longitudSiniestro = Double.parseDouble(jTLongitud.getText());
+
+        cua.obtenerDatosIdLongitudLatitud(latitudSiniestro, longitudSiniestro);
+        int cuaCer= cua.obtenerIdCuartelMasCercano(latitudSiniestro, longitudSiniestro);
+       mostrarBrigadasPorIdCuartel(cuaCer);
+    
+    }//GEN-LAST:event_jButton1ActionPerformed
     private void llenarComboEspecialidades() {
         String[] especialidades = briga.Especialidades();
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(especialidades));
@@ -357,20 +379,102 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         }
     }
 
-//    private void cabeceraSiniestroActivos() {
-//        SinAct.addColumn("Tipo");
-//        SinAct.addColumn("Fecha Siniestro");
-//        SinAct.addColumn("Hora Siniestro");
-//        SinAct.addColumn("Latitud");
-//        SinAct.addColumn("Longitud");
-//        SinAct.addColumn("Detalles");
-//        jTSinAct.setModel(SinAct);
+//----------------------------------------------cabecera tabla cuartel------------------------------------------------
+//    private void cabeceraCuartel() {
+//        modelo.addColumn("IdCuartel");
+//        modelo.addColumn("Nombre del cuartel");
+//        modelo.addColumn("Direccion");
+//        modelo.addColumn("Longitud");
+//        modelo.addColumn("Latitud");
+//        modelo.addColumn("Telefono");
+//        modelo.addColumn("Correo");
+//        jTCuartel.setModel(modelo);
 //    }
+
+//----------------------------------------------fin cabecera tabla cuartel------------------------------------------------ 
+    //-------------------LLena la tabla JCuartel-----------------------
+//    public void mostrarDatosCuartel() {
+//        DefaultTableModel tcuar = new DefaultTableModel();
+//        tcuar.addColumn("IdCuartel");
+//        tcuar.addColumn("Nombre del cuartel");
+//        tcuar.addColumn("Direccion");
+//        tcuar.addColumn("Longitud");
+//        tcuar.addColumn("Latitud");
+//        tcuar.addColumn("Telefono");
+//        tcuar.addColumn("Correo");
+//        jTCuartel.setModel(tcuar);
+//
+//        try {
+//            // Suponiendo que 'con' es tu conexión a la base de datos
+//            String consulta = "SELECT idCuartel, nombreCuartel, direccion, longitud, latitud, telefono, correo FROM cuartel WHERE estadoC = 1";
+//            PreparedStatement ps = con.prepareStatement(consulta);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                Object[] fila = {
+//                    rs.getInt("idCuartel"),
+//                    rs.getString("nombreCuartel"),
+//                    rs.getString("direccion"),
+//                    rs.getDouble("longitud"), // Cambié a double ya que podría ser un valor decimal
+//                    rs.getDouble("latitud"), // Cambié a double
+//                    rs.getString("telefono"),
+//                    rs.getString("correo")
+//                };
+//                tcuar.addRow(fila);
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Manejar la excepción según tus necesidades
+//        }
+//    }
+    //-------lista brigada o brigadas segun el idcurtel
+
+    public void mostrarBrigadasPorIdCuartel(int idCuartel) {
+        DefaultTableModel tbrigad = new DefaultTableModel();
+        tbrigad.addColumn("IdBrigada");
+        tbrigad.addColumn("Nombre de la brigada");
+        tbrigad.addColumn("Especialidad");
+        tbrigad.addColumn("Libre/Ocupada");
+        tbrigad.addColumn("IdCuartel");
+        jTBrigada.setModel(tbrigad);
+
+        try {
+            String consulta = "SELECT idBrigada, nombreBrig, especialidad, libre, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ?";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ps.setInt(1, idCuartel); // Establecer el valor del parámetro
+            ResultSet rs = ps.executeQuery();
+
+            boolean hayBrigadas = false;
+
+            while (rs.next()) {
+                hayBrigadas = true;
+                Object[] fila = {
+                    rs.getInt("idBrigada"),
+                    rs.getString("nombreBrig"),
+                    rs.getString("especialidad"),
+                    rs.getInt("libre"),
+                    rs.getInt("idCuartel")
+                };
+                tbrigad.addRow(fila);
+            }
+
+            if (!hayBrigadas) {
+                JOptionPane.showMessageDialog(null, "El cuartel más cercano no tiene brigadas.", "Sin Brigadas", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+    }
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBGuardarSiniestro;
     private javax.swing.JButton jBSalir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jCTipo;
     private com.toedter.calendar.JDateChooser jDFechaSiniestro;
@@ -386,12 +490,12 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTBrigada;
     private javax.swing.JTextField jTDetalles;
     private javax.swing.JTextField jTHora;
     private javax.swing.JTextField jTLatitud;
     private javax.swing.JTextField jTLongitud;
     private javax.swing.JTextField jTMinutos;
     private javax.swing.JTable jTSinAct;
-    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

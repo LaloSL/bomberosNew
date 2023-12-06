@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -60,10 +62,8 @@ public class CuartelData {
 
     }
 //----------------------- fin método guardar cuartel----------------------------------------------------  
-        
 
 //---------------------------------------------------FIN AGREGAR--------------------------------------------------
-    
 //-------------------------------------ELIMINAR CUARTEL------------------------------------------------------
 //---------------------cambiar estado de cuartel---------------------------------------
     public void cambiarEstadoCuartel(int idCuartel) {
@@ -87,8 +87,73 @@ public class CuartelData {
     }
 
 //---------------------------------------------------------------------------------
+    //distancias de cuerteles-------------- calculadora de distancias
+    public List<String> obtenerDatosIdLongitudLatitud(double latitudSiniestro, double longitudSiniestro) {
+        List<String> listaDistanciasCuartel = new ArrayList<>();
+
+        try {
+            String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int idCuartel = rs.getInt("idCuartel");
+                double longitudCuartel = rs.getDouble("longitud");
+                double latitudCuartel = rs.getDouble("latitud");
+
+                // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
+                double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
+                        + Math.pow((latitudCuartel - latitudSiniestro), 2));
+
+                String datosCuartel = "IdCuartel: " + idCuartel + ", Distancia: " + distancia;
+                listaDistanciasCuartel.add(datosCuartel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+
+        for (String datosCuartel : listaDistanciasCuartel) {
+            System.out.println(datosCuartel);
+        }
+
+        return listaDistanciasCuartel;
+    }
+
+//calcula distancia y retorna id cuartel del cuartel mas cercano
+    public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro) {
+        int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
+        double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
+
+        try {
+            String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int idCuartel = rs.getInt("idCuartel");
+                double longitudCuartel = rs.getDouble("longitud");
+                double latitudCuartel = rs.getDouble("latitud");
+
+                // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
+                double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
+                        + Math.pow((latitudCuartel - latitudSiniestro), 2));
+
+                if (distancia < distanciaMinima) {
+                    distanciaMinima = distancia;
+                    idCuartelMasCercano = idCuartel;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción según tus necesidades
+        }
+
+        System.out.println("IdCuartel más cercano: " + idCuartelMasCercano + ", Distancia mínima: " + distanciaMinima);
+        return idCuartelMasCercano;
+    }
 
 //------------------------------------FIN ELIMINAR CUARTEL-----------------------------------------------    
-    
-    
 }
