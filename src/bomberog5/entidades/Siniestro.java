@@ -5,64 +5,61 @@
  */
 package bomberog5.entidades;
 
+import java.sql.Time;
+
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.LocalTime;
 
 /**
  *
  * @author Asus
  */
 public class Siniestro {
-     private int idCodigo;
+    private int idCodigo;
     private String tipo;
+    private Date fechaSiniestro;
+    private LocalTime horaSinestro;
     private int coordX;
     private int coordY;
     private String detalles;
+    private Date fechaResol;
+    private LocalTime horaResol;
     private int puntuacion;
     private Brigada idBrigada;
-    private LocalDateTime fechaSiniestro;
-    private LocalDateTime fechaResol;
-    private int idBriga;
+    private boolean estadoS;
 
     public Siniestro() {
     }
 
-    public Siniestro(int idCodigo, String tipo, int coordX, int coordY, String detalles, int puntuacion, Brigada idBrigada, LocalDateTime fechaSiniestro, LocalDateTime fechaResol) {
+    public Siniestro(int idCodigo, String tipo, Date fechaSiniestro, LocalTime horaSinestro, int coordX, int coordY, String detalles, Date fechaResol, LocalTime horaResol, int puntuacion, Brigada idBrigada, boolean estadoS) {
         this.idCodigo = idCodigo;
         this.tipo = tipo;
+        this.fechaSiniestro = fechaSiniestro;
+        this.horaSinestro = horaSinestro;
         this.coordX = coordX;
         this.coordY = coordY;
         this.detalles = detalles;
+        this.fechaResol = fechaResol;
+        this.horaResol = horaResol;
         this.puntuacion = puntuacion;
         this.idBrigada = idBrigada;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
+        this.estadoS = estadoS;
     }
 
-    public Siniestro(String tipo, int coordX, int coordY, String detalles, int puntuacion, Brigada idBrigada, LocalDateTime fechaSiniestro, LocalDateTime fechaResol) {
+    public Siniestro(String tipo, Date fechaSiniestro, LocalTime horaSinestro, int coordX, int coordY, String detalles, Date fechaResol, LocalTime horaResol, int puntuacion, Brigada idBrigada, boolean estadoS) {
         this.tipo = tipo;
+        this.fechaSiniestro = fechaSiniestro;
+        this.horaSinestro = horaSinestro;
         this.coordX = coordX;
         this.coordY = coordY;
         this.detalles = detalles;
+        this.fechaResol = fechaResol;
+        this.horaResol = horaResol;
         this.puntuacion = puntuacion;
         this.idBrigada = idBrigada;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
+        this.estadoS = estadoS;
     }
-    
-//--------------------------- Sin idCodigo ni objeto Birgada y con int int idBriga-----------------------------------
-    
-   public Siniestro(String tipo, int coordX, int coordY, String detalles, int puntuacion, LocalDateTime fechaSiniestro, LocalDateTime fechaResol, int idBriga) {
-        this.tipo = tipo;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.detalles = detalles;
-        this.puntuacion = puntuacion;
-        this.fechaSiniestro = fechaSiniestro;
-        this.fechaResol = fechaResol;
-        this.idBriga = idBriga;
-    }  
-    
-//---------------------------FIN Sin idCodigo ni objeto Birgada y con int int idBriga-----------------------------------
 
     public int getIdCodigo() {
         return idCodigo;
@@ -78,6 +75,22 @@ public class Siniestro {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Date getFechaSiniestro() {
+        return fechaSiniestro;
+    }
+
+    public void setFechaSiniestro(Date fechaSiniestro) {
+        this.fechaSiniestro = fechaSiniestro;
+    }
+
+    public LocalTime getHoraSinestro() {
+        return horaSinestro;
+    }
+
+    public void setHoraSinestro(LocalTime horaSinestro) {
+        this.horaSinestro = horaSinestro;
     }
 
     public int getCoordX() {
@@ -104,6 +117,22 @@ public class Siniestro {
         this.detalles = detalles;
     }
 
+    public Date getFechaResol() {
+        return fechaResol;
+    }
+
+    public void setFechaResol(Date fechaResol) {
+        this.fechaResol = fechaResol;
+    }
+
+    public LocalTime getHoraResol() {
+        return horaResol;
+    }
+
+    public void setHoraResol(LocalTime horaResol) {
+        this.horaResol = horaResol;
+    }
+
     public int getPuntuacion() {
         return puntuacion;
     }
@@ -120,37 +149,19 @@ public class Siniestro {
         this.idBrigada = idBrigada;
     }
 
-    public LocalDateTime getFechaSiniestro() {
-        return fechaSiniestro;
+    public boolean isEstadoS() {
+        return estadoS;
     }
 
-    public void setFechaSiniestro(LocalDateTime fechaSiniestro) {
-        this.fechaSiniestro = fechaSiniestro;
-    }
-
-    public LocalDateTime getFechaResol() {
-        return fechaResol;
-    }
-
-    public void setFechaResol(LocalDateTime fechaResol) {
-        this.fechaResol = fechaResol;
-    }
-
-    public int getIdBriga() {
-        return idBriga;
-    }
-
-    public void setIdBriga(int idBriga) {
-        this.idBriga = idBriga;
+    public void setEstadoS(boolean estadoS) {
+        this.estadoS = estadoS;
     }
 
     @Override
     public String toString() {
-        return "SiniestroData{" + "idCodigo=" + idCodigo + ", tipo=" + tipo + ", coordX=" + coordX + ", coordY=" + coordY + ", detalles=" + detalles + ", puntuacion=" + puntuacion + ", idBrigada=" + idBrigada + ", fechaSiniestro=" + fechaSiniestro + ", fechaResol=" + fechaResol + ", idBriga=" + idBriga + '}';
+        return "Siniestro{" + "idCodigo=" + idCodigo + ", tipo=" + tipo + ", fechaSiniestro=" + fechaSiniestro + ", horaSinestro=" + horaSinestro + ", coordX=" + coordX + ", coordY=" + coordY + ", detalles=" + detalles + ", fechaResol=" + fechaResol + ", horaResol=" + horaResol + ", puntuacion=" + puntuacion + ", idBrigada=" + idBrigada + ", estadoS=" + estadoS + '}';
     }
-   
-   
-   
-}
     
-
+    
+    
+}

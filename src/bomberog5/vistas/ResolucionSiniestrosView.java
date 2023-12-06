@@ -14,6 +14,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,7 +40,6 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
         llenarTablaSiniestrosActivos();
         llenarTablaSiniestrosFinalizados();
         llenarComboPuntuacion();
-//        actualizarSiniestroSeleccionado();
 
 //        cabeceraSiniestroActivos();
 //        cabeceraSiniestroFinalizados();
@@ -62,7 +65,7 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jBFinSin = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTSinFin = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
@@ -91,7 +94,12 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Fecha");
 
-        jButton1.setText("Finalizar Siniestro");
+        jBFinSin.setText("Finalizar Siniestro");
+        jBFinSin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBFinSinActionPerformed(evt);
+            }
+        });
 
         jTSinFin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -157,7 +165,7 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jCPuntos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(44, 44, 44)
-                                .addComponent(jButton1)))))
+                                .addComponent(jBFinSin)))))
                 .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
@@ -180,7 +188,7 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                         .addComponent(jTHoraRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTMinResol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
-                        .addComponent(jButton1)))
+                        .addComponent(jBFinSin)))
                 .addGap(49, 49, 49)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
@@ -197,8 +205,15 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jBSalirActionPerformed
 
+    private void jBFinSinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFinSinActionPerformed
+        actualizarSiniestroSeleccionado();
+        llenarTablaSiniestrosActivos();
+        llenarTablaSiniestrosFinalizados();
+    }//GEN-LAST:event_jBFinSinActionPerformed
+
     public void llenarTablaSiniestrosActivos() {
         DefaultTableModel tSin = new DefaultTableModel();
+        tSin.addColumn("ID");
         tSin.addColumn("Tipo");
         tSin.addColumn("Fecha");
         tSin.addColumn("Hora");
@@ -209,13 +224,14 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 
         try {
 
-            String consulta = "SELECT tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
+            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
                 Object[] fila = {
+                    rs.getString("idCodigo"),
                     rs.getString("tipo"),
                     fecha.format(rs.getDate("fechaSiniestro")),
                     rs.getTime("horaSiniestro"),
@@ -242,43 +258,43 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 //        SinAct.addColumn("Detalles");
 //        jTSinAct1.setModel(SinAct);
 //    }
+    public void llenarTablaSiniestrosFinalizados() {
+        DefaultTableModel tSinFin = new DefaultTableModel();
+        tSinFin.addColumn("ID");
+        tSinFin.addColumn("Tipo");
+        tSinFin.addColumn("Fecha Resolucion");
+        tSinFin.addColumn("Hora Resolucion");
+        tSinFin.addColumn("Puntuación");
 
-   public void llenarTablaSiniestrosFinalizados() {
-    DefaultTableModel tSinFin = new DefaultTableModel();
-    tSinFin.addColumn("Tipo");
-    tSinFin.addColumn("Fecha Resolucion");
-    tSinFin.addColumn("Hora Resolucion");
-    tSinFin.addColumn("Detalles");
-    tSinFin.addColumn("Puntuación");
-    
-    jTSinFin.setModel(tSinFin);
+        jTSinFin.setModel(tSinFin);
 
-    try {
+        try {
 
-        String consulta = "SELECT tipo, fechaResol, horaResol, detalles, puntuacion FROM siniestro WHERE estadoS=0";
-        PreparedStatement ps = con.prepareStatement(consulta);
-        ResultSet rs = ps.executeQuery();
-       // SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+            String consulta = "SELECT idCodigo, tipo, fechaResol, horaResol, detalles, puntuacion FROM siniestro WHERE estadoS=0";
+            PreparedStatement ps = con.prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
+            // SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 
-        while (rs.next()) {
-            Object[] fila = {
-                rs.getString("tipo"),
-                //fecha.format(rs.getDate("fechaResol")), 
-                rs.getDate("fechaResol"),
-                rs.getTime("horaResol"),
-                rs.getInt("puntuacion"),
-                rs.getString("detalles")
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("idCodigo"),
+                    rs.getString("tipo"),
+                    //fecha.format(rs.getDate("fechaResol")), 
+                    rs.getDate("fechaResol"),
+                    rs.getTime("horaResol"),
+                    rs.getInt("puntuacion"),
+                    rs.getString("detalles")
 
-            };
-            tSinFin.addRow(fila);
+                };
+                tSinFin.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        
     }
-}
-    
+
     private void llenarComboPuntuacion() {
         String[] puntuacion = sin.Puntuacion();
         jCPuntos.setModel(new javax.swing.DefaultComboBoxModel<>(puntuacion));
@@ -292,50 +308,45 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 //        SinFin.addColumn("Puntuacion");
 //        jTSinFin.setModel(SinFin);
 //    }
-    
-    
-//    private void actualizarSiniestroSeleccionado() {
-//    int filaSeleccionada = jTSinAct1.getSelectedRow();
-//    if (filaSeleccionada != -1) {
-//        int idSiniestro = Integer.parseInt(jTSinAct1.getValueAt(filaSeleccionada, 0).toString());
-//
-//        try {
-//            String consulta = "SELECT * FROM siniestro WHERE id = ?";
-//            PreparedStatement ps = con.prepareStatement(consulta);
-//            ps.setInt(1, idSiniestro);
-//            ResultSet rs = ps.executeQuery();
-//
-//            if (rs.next()) {
-//                // Get the selected row and pass it to the actualizarSiniestro method
-//                Object[] fila = extraerFila(rs);
-//                sin.actualizarSiniestro(fechaResol, consulta, title, PROPERTIES);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            // Manejar la excepción según tus necesidades
-//        }
-//    }
-//}
-    
-//    private Object[] extraerFila(ResultSet rs) throws SQLException  {
-//    return new Object[]{
-//        rs.getString("tipo"),
-//        rs.getDate("fechaSiniestro"),
-//        rs.getTime("horaSiniestro"),
-//        rs.getInt("coordx"),
-//        rs.getInt("coordY"),
-//        rs.getString("detalles")
-//    };
-//}
-    
+    private void actualizarSiniestroSeleccionado() {
+        int filaSeleccionada = jTSinAct1.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int idCodigo = Integer.parseInt(jTSinAct1.getValueAt(filaSeleccionada, 0).toString());
+            String consulta = "UPDATE siniestro SET fechaResol = ?, horaResol = ?, puntuacion = ?, estadoS = ? WHERE idCodigo = ?";
 
-    
-    
+            try {
+                PreparedStatement ps = con.prepareStatement(consulta);
+                java.sql.Date fechaResol = new java.sql.Date(jDFechaResol.getDate().getTime());
+                LocalTime localTime = LocalTime.of(
+                Integer.parseInt(jTHoraRes.getText()),
+                Integer.parseInt(jTMinResol.getText()));
+                java.sql.Time horaResol = java.sql.Time.valueOf(localTime);
+//                java.sql.Time horaResol = java.sql.Time.valueOf(jTHoraRes.getText() + ":" + jTMinResol.getText());                
+                int puntuacion = Integer.parseInt(jCPuntos.getSelectedItem().toString());
+                
+
+                ps.setDate(1, fechaResol);
+                ps.setTime(2, horaResol);
+                ps.setInt(3, puntuacion);
+                ps.setInt(4, 0);
+                ps.setInt(5, idCodigo);
+
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Siniestro finalizado");
+                
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Manejar la excepción según tus necesidades
+            }
+
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBFinSin;
     private javax.swing.JButton jBSalir;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jCPuntos;
     private com.toedter.calendar.JDateChooser jDFechaResol;
     private javax.swing.JLabel jLabel1;
