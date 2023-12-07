@@ -210,5 +210,41 @@ public class BomberoData {
         }
     }
 
-//------------------------FIN ELIMINAR CUARTEL------------------------------    
+//------------------------FIN ELIMINAR CUARTEL------------------------------  
+//--------------------------------------CONSULTAS-------------------------------------
+//---------------------- Muestra nombre de bomberos de la misma brigada-----------------------
+    public List<String> mostrarOpcionesBomberosPorBrigada(int idBrigada) {
+        List<String> nombresBomberos = new ArrayList<>();
+
+        String sql = "SELECT idBombero, dni, nombreApellido FROM bombero WHERE idBrigada = ? AND estadoB = 1";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idBrigada);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int idBombero = rs.getInt("idBombero");
+                String nombreBombero = rs.getString("nombreApellido");
+                int dni = rs.getInt("dni");
+
+                nombresBomberos.add(idBombero + ". " + nombreBombero + " - DNI: " + dni);
+            }
+
+            ps.close();
+
+            if (nombresBomberos.size() == 1) {
+                JOptionPane.showMessageDialog(null, "La brigada seleccionada contiene un solo bombero. Por favor, seleccione otra brigada.");
+            } else if (nombresBomberos.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "La brigada seleccionada no tiene bomberos. Por favor, seleccione otra brigada.");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener nombres de bomberos: " + ex.getMessage());
+        }
+
+        return nombresBomberos;
+    }
+
+    //----------------------Fin Muestra nombre de bomberos de la misma brigada-----------------------    
 }
