@@ -33,6 +33,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private CuartelData cua = new CuartelData();
     private Connection con = null;
     private DefaultTableModel SinAct = new DefaultTableModel();
+    private DefaultTableModel tbrigad = new DefaultTableModel();
 
     /**
      * Creates new form Siniestro
@@ -43,6 +44,8 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         con = Conexion.getConexion();
         llenarTablaSiniestrosActivos();
+        cabeceraBrigadaDisponibles();
+
     }
 
     /**
@@ -73,7 +76,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTBrigada = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        jBAsignarBrigada = new javax.swing.JButton();
         jBSalir = new javax.swing.JButton();
         jTMinutos = new javax.swing.JTextField();
         jTLongitud = new javax.swing.JTextField();
@@ -138,7 +141,12 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTBrigada);
 
-        jButton2.setText("Asignar Brigada");
+        jBAsignarBrigada.setText("Asignar Brigada");
+        jBAsignarBrigada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAsignarBrigadaActionPerformed(evt);
+            }
+        });
 
         jBSalir.setText("Salir");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +191,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jButton1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton2)
+                                        .addComponent(jBAsignarBrigada)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jBSalir))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -282,7 +290,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
+                            .addComponent(jBAsignarBrigada)
                             .addComponent(jBSalir)
                             .addComponent(jButton1))))
                 .addContainerGap(153, Short.MAX_VALUE))
@@ -321,6 +329,8 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(
                 null, "Siniestro registrado correctamente.");
 
+        llenarTablaSiniestrosActivos();
+
 
     }//GEN-LAST:event_jBGuardarSiniestroActionPerformed
 
@@ -329,15 +339,19 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTLongitudActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                                                
+
         double latitudSiniestro = Double.parseDouble(jTLatitud.getText());
         double longitudSiniestro = Double.parseDouble(jTLongitud.getText());
 
         cua.obtenerDatosIdLongitudLatitud(latitudSiniestro, longitudSiniestro);
-        int cuaCer= cua.obtenerIdCuartelMasCercano(latitudSiniestro, longitudSiniestro);
-       mostrarBrigadasPorIdCuartel(cuaCer);
-    
+        int cuaCer = cua.obtenerIdCuartelMasCercano(latitudSiniestro, longitudSiniestro);
+        mostrarBrigadasPorIdCuartel(cuaCer);
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jBAsignarBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAsignarBrigadaActionPerformed
+     
+    }//GEN-LAST:event_jBAsignarBrigadaActionPerformed
     private void llenarComboEspecialidades() {
         String[] especialidades = briga.Especialidades();
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(especialidades));
@@ -345,6 +359,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
     public void llenarTablaSiniestrosActivos() {
         DefaultTableModel tSin = new DefaultTableModel();
+        tSin.addColumn("ID");
         tSin.addColumn("Tipo");
         tSin.addColumn("Fecha");
         tSin.addColumn("Hora");
@@ -355,13 +370,14 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         try {
 
-            String consulta = "SELECT tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
+            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
                 Object[] fila = {
+                    rs.getInt("idCodigo"),
                     rs.getString("tipo"),
                     fecha.format(rs.getDate("fechaSiniestro")),
                     rs.getTime("horaSiniestro"),
@@ -380,7 +396,17 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     }
 
 //----------------------------------------------cabecera tabla cuartel------------------------------------------------
-//    private void cabeceraCuartel() {
+//  
+    private void cabeceraBrigadaDisponibles() {
+        DefaultTableModel tbrigad = new DefaultTableModel();
+        tbrigad.addColumn("IdBrigada");
+        tbrigad.addColumn("Nombre de la brigada");
+        tbrigad.addColumn("Especialidad");
+//        tbrigad.addColumn("Libre/Ocupada");
+//        tbrigad.addColumn("IdCuartel");
+        jTBrigada.setModel(tbrigad);
+
+    }
 //        modelo.addColumn("IdCuartel");
 //        modelo.addColumn("Nombre del cuartel");
 //        modelo.addColumn("Direccion");
@@ -429,20 +455,19 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 //        }
 //    }
     //-------lista brigada o brigadas segun el idcurtel
-
     public void mostrarBrigadasPorIdCuartel(int idCuartel) {
         DefaultTableModel tbrigad = new DefaultTableModel();
         tbrigad.addColumn("IdBrigada");
         tbrigad.addColumn("Nombre de la brigada");
         tbrigad.addColumn("Especialidad");
-        tbrigad.addColumn("Libre/Ocupada");
-        tbrigad.addColumn("IdCuartel");
+//        tbrigad.addColumn("Libre/Ocupada");
+//        tbrigad.addColumn("IdCuartel");
         jTBrigada.setModel(tbrigad);
 
         try {
-            String consulta = "SELECT idBrigada, nombreBrig, especialidad, libre, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ?";
+            String consulta = "SELECT idBrigada, nombreBrig, especialidad, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ?";
             PreparedStatement ps = con.prepareStatement(consulta);
-            ps.setInt(1, idCuartel); // Establecer el valor del parámetro
+            ps.setInt(1, idCuartel);
             ResultSet rs = ps.executeQuery();
 
             boolean hayBrigadas = false;
@@ -453,7 +478,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                     rs.getInt("idBrigada"),
                     rs.getString("nombreBrig"),
                     rs.getString("especialidad"),
-                    rs.getInt("libre"),
+                    //                    rs.getInt("libre"),
                     rs.getInt("idCuartel")
                 };
                 tbrigad.addRow(fila);
@@ -468,14 +493,35 @@ public class SiniestroView extends javax.swing.JInternalFrame {
             // Manejar la excepción según tus necesidades
         }
     }
-    
 
+    public void asignarBrigada(int idCodigo, int idBrigada) throws SQLException {
+        String query = "UPDATE siniestro SET idbrigada = ? WHERE idCodigo = ?; "
+                + "UPDATE brigada SET estado = 0 WHERE idbrigada = ?;";
+       
+      
+        int idCodigoSelec = 0;
+        idCodigo = (int) jTSinAct.getValueAt(jTSinAct.getSelectedRow(), idCodigoSelec);
+        int idBrigadaSelec = 0;
+       idBrigada = (int) jTBrigada.getValueAt(jTBrigada.getSelectedRow(), idBrigadaSelec);
+
+        PreparedStatement ps = con.prepareStatement(query);
+
+        ps.setInt(1, idBrigada);
+        ps.setInt(2, idCodigo);
+        ps.setInt(3, idBrigada);
+
+        ps.executeUpdate();
+
+        
+
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBAsignarBrigada;
     private javax.swing.JButton jBGuardarSiniestro;
     private javax.swing.JButton jBSalir;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jCTipo;
     private com.toedter.calendar.JDateChooser jDFechaSiniestro;
     private javax.swing.JLabel jLabel1;
