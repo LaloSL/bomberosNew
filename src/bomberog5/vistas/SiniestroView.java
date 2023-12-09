@@ -340,21 +340,35 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        double latitudSiniestro = Double.parseDouble(jTLatitud.getText());
-        double longitudSiniestro = Double.parseDouble(jTLongitud.getText());
+        int row = jTSinAct.getSelectedRow();
+        double latSin = Double.parseDouble(jTSinAct.getValueAt(row, 4).toString());
+        double longSin = Double.parseDouble(jTSinAct.getValueAt(row, 5).toString());
+        
 
-        cua.obtenerDatosIdLongitudLatitud(latitudSiniestro, longitudSiniestro);
-        int cuaCer = cua.obtenerIdCuartelMasCercano(latitudSiniestro, longitudSiniestro);
+        cua.obtenerDatosIdLongitudLatitud(latSin, longSin);
+        int cuaCer = cua.obtenerIdCuartelMasCercano(latSin, longSin);
         mostrarBrigadasPorIdCuartel(cuaCer);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBAsignarBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAsignarBrigadaActionPerformed
-     
+
+        int rowSinAct = jTSinAct.getSelectedRow();
+        int rowBrigada = jTBrigada.getSelectedRow();
+
+        int idCodigo = Integer.parseInt(jTSinAct.getValueAt(rowSinAct, 0).toString());
+        int idBrigada = Integer.parseInt(jTBrigada.getValueAt(rowBrigada, 0).toString());
+
+        try {
+            asignarBrigada(idCodigo, idBrigada);
+        } catch (SQLException ex) {
+            Logger.getLogger(SiniestroView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jBAsignarBrigadaActionPerformed
     private void llenarComboEspecialidades() {
-        String[] especialidades = briga.Especialidades();
-        jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(especialidades));
+        String[] tipo = sin.tipoSiniestro();
+        jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(tipo));
     }
 
     public void llenarTablaSiniestrosActivos() {
@@ -370,7 +384,9 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
         try {
 
-            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
+            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, coordx, coordy,"
+                    + " detalles FROM siniestro WHERE estadoS = 1 AND idBrigada IS NULL";
+
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -495,26 +511,27 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     }
 
     public void asignarBrigada(int idCodigo, int idBrigada) throws SQLException {
-        String query = "UPDATE siniestro SET idbrigada = ? WHERE idCodigo = ?; "
-                + "UPDATE brigada SET estado = 0 WHERE idbrigada = ?;";
-       
-      
-        int idCodigoSelec = 0;
-        idCodigo = (int) jTSinAct.getValueAt(jTSinAct.getSelectedRow(), idCodigoSelec);
-        int idBrigadaSelec = 0;
-       idBrigada = (int) jTBrigada.getValueAt(jTBrigada.getSelectedRow(), idBrigadaSelec);
+        String Siniestro = "UPDATE siniestro SET idBrigada = ? WHERE idCodigo = ?";
+        String Brigada = "UPDATE brigada SET estadoBr = FALSE WHERE idBrigada = ?";
 
-        PreparedStatement ps = con.prepareStatement(query);
+        int psSiniestro;
+        int psBrigada;
 
-        ps.setInt(1, idBrigada);
-        ps.setInt(2, idCodigo);
-        ps.setInt(3, idBrigada);
+        try (PreparedStatement psSin = con.prepareStatement(Siniestro)) {
+            psSin.setInt(1, idBrigada);
+            psSin.setInt(2, idCodigo);
+            psSiniestro = psSin.executeUpdate();
+        }
+        try (PreparedStatement psBri = con.prepareStatement(Brigada)) {
+            psBri.setInt(1, idBrigada);
+            psBrigada = psBri.executeUpdate();
 
-        ps.executeUpdate();
+        }
 
-        
+        if (psSiniestro == 1 && psBrigada == 1) {
+            JOptionPane.showMessageDialog(this, "Brigada Asignada");
+        }
 
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

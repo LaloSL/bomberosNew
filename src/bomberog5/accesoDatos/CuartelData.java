@@ -125,6 +125,7 @@ public class CuartelData {
     public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro) {
         int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
         double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
+        
 
         try {
             String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";
@@ -155,5 +156,7 @@ public class CuartelData {
         return idCuartelMasCercano;
     }
 
+    
+    
 //------------------------------------FIN ELIMINAR CUARTEL-----------------------------------------------    
 }

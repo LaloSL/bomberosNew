@@ -104,6 +104,17 @@ public class SiniestroData {
         };
     }
     
+    public String[] tipoSiniestro() {
+        return new String[] {
+            "Incendios",
+            "Derrumbes",
+            "Rescates de montaña",
+            "Accidente de tránsito",
+            "Inundaciones",
+            "Operativos"
+        };
+    }
+    
     
     
     

@@ -217,14 +217,14 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
         tSin.addColumn("Tipo");
         tSin.addColumn("Fecha");
         tSin.addColumn("Hora");
-        tSin.addColumn("CoordX");
-        tSin.addColumn("CoordY");
+        //tSin.addColumn("CoordX");
+        //tSin.addColumn("CoordY");
         tSin.addColumn("Detalles");
         jTSinAct1.setModel(tSin);
 
         try {
 
-            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, coordx, coordy, detalles FROM siniestro WHERE estadoS=1";
+            String consulta = "SELECT idCodigo, tipo, fechaSiniestro, horaSiniestro, detalles FROM siniestro WHERE estadoS=1 AND idBrigada IS NOT NULL";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -235,8 +235,8 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                     rs.getString("tipo"),
                     fecha.format(rs.getDate("fechaSiniestro")),
                     rs.getTime("horaSiniestro"),
-                    rs.getInt("coordx"),
-                    rs.getInt("coordY"),
+                   // rs.getInt("coordx"),
+                   // rs.getInt("coordY"),
                     rs.getString("detalles")
 
                 };
@@ -273,13 +273,13 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
             String consulta = "SELECT idCodigo, tipo, fechaResol, horaResol, detalles, puntuacion FROM siniestro WHERE estadoS=0";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
-            // SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat fecha1 = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
                 Object[] fila = {
                     rs.getString("idCodigo"),
                     rs.getString("tipo"),
-                    //fecha.format(rs.getDate("fechaResol")), 
+                    fecha1.format(rs.getDate("fechaResol")), 
                     rs.getDate("fechaResol"),
                     rs.getTime("horaResol"),
                     rs.getInt("puntuacion"),
@@ -318,12 +318,11 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                 PreparedStatement ps = con.prepareStatement(consulta);
                 java.sql.Date fechaResol = new java.sql.Date(jDFechaResol.getDate().getTime());
                 LocalTime localTime = LocalTime.of(
-                Integer.parseInt(jTHoraRes.getText()),
-                Integer.parseInt(jTMinResol.getText()));
+                        Integer.parseInt(jTHoraRes.getText()),
+                        Integer.parseInt(jTMinResol.getText()));
                 java.sql.Time horaResol = java.sql.Time.valueOf(localTime);
 //                java.sql.Time horaResol = java.sql.Time.valueOf(jTHoraRes.getText() + ":" + jTMinResol.getText());                
                 int puntuacion = Integer.parseInt(jCPuntos.getSelectedItem().toString());
-                
 
                 ps.setDate(1, fechaResol);
                 ps.setTime(2, horaResol);
@@ -333,7 +332,14 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Siniestro finalizado");
+
+                //String consultaObtenerIdBrigada = "SELECT idBrigada FROM siniestro WHERE idCodigo = ?";
+                String consultaBrig = "UPDATE brigada SET estadoBr = 1 WHERE idBrigada = (SELECT idBrigada FROM siniestro WHERE idCodigo = ?)";
+
                 
+                PreparedStatement psBrigada = con.prepareStatement(consultaBrig);
+                psBrigada.setInt(1, idCodigo);
+                psBrigada.executeUpdate();
 
             } catch (Exception e) {
                 e.printStackTrace();
