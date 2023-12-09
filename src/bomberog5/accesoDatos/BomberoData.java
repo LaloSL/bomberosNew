@@ -234,9 +234,9 @@ public class BomberoData {
             ps.close();
 
             if (nombresBomberos.size() == 1) {
-                JOptionPane.showMessageDialog(null, "La brigada seleccionada contiene un solo bombero. Por favor, seleccione otra brigada.");
+                JOptionPane.showMessageDialog(null, "La brigada seleccionada contiene un solo bombero");
             } else if (nombresBomberos.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "La brigada seleccionada no tiene bomberos. Por favor, seleccione otra brigada.");
+                JOptionPane.showMessageDialog(null, "La brigada seleccionada no tiene bomberos");
             }
 
         } catch (SQLException ex) {

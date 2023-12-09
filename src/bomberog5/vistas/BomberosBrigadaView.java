@@ -44,8 +44,7 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
                 // Manejar el evento de selección de la tabla aquí
                 filaSeleccionadaBrigada = jTBrigada.getSelectedRow();
                 if (filaSeleccionadaBrigada != -1) {
-//                    llenarCamposBrigada();
-                    jTBrigada.setEnabled(false);
+                   limpiarTabla(modelo2);
                 }
             }
         });
@@ -64,9 +63,10 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
         jTBrigada = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTBombero = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jBConsultar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         jTBrigada.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -94,10 +94,10 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTBombero);
 
-        jButton1.setText("Consultar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBConsultar.setText("Consultar");
+        jBConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBConsultarActionPerformed(evt);
             }
         });
 
@@ -108,40 +108,45 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton3.setText("Limpiar");
+        jLabel1.setText("Tabla Brigada");
+
+        jLabel2.setText("Tabla Bomberos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(317, 317, 317)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(46, 46, 46))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jBConsultar)
+                            .addGap(242, 242, 242)
+                            .addComponent(jButton2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(188, 188, 188)
+                .addGap(23, 23, 23)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
+                    .addComponent(jBConsultar)
                     .addComponent(jButton2))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -151,20 +156,26 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
-        BrigadaIna();
-        List<String> nombresBomberos = bomb.mostrarOpcionesBomberosPorBrigada(idBrigadaSeleccionada);
+    private void jBConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConsultarActionPerformed
+        if (filaSeleccionadaBrigada == -1) {
+            JOptionPane.showMessageDialog(null, "Primero debe seleccionar una brigada");
+            dispose();
+        } else {
+            int idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
+            //BrigadaIna();
+            List<String> nombresBomberos = bomb.mostrarOpcionesBomberosPorBrigada(idBrigadaSeleccionada);
+            mostrarBomberosEnTabla(nombresBomberos);
+           // bomberosIna();
+        }
 
-        mostrarBomberosEnTabla(nombresBomberos);
-   
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jBConsultarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBConsultar;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTBombero;
@@ -186,7 +197,7 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
     private void cabeceraBombero() {
         modelo2.addColumn("IdBombero");
         modelo2.addColumn("Nombre y Apellido");
-         modelo2.addColumn("DNI");
+        modelo2.addColumn("DNI");
         jTBombero.setModel(modelo2);
     }
 
@@ -244,27 +255,36 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
     }
     //--------------Fin inhabilita la tabla brigada-------------------------------  
 
+    //--------------inhabilita la tabla brigada-------------------------------
+    private void bomberosIna() {
+        jTBombero.setEnabled(false);
+        jBConsultar.setEnabled(false);
+
+    }
+    //--------------Fin inhabilita la tabla brigada-------------------------------  
+
     private void mostrarBomberosEnTabla(List<String> nombresBomberos) {
-    modelo2.setRowCount(0);
+        modelo2.setRowCount(0);
 
-    for (String nombreBombero : nombresBomberos) {
-        String[] datosBombero = nombreBombero.split(" - DNI: "); // Dividir por " - DNI: "
+        for (String nombreBombero : nombresBomberos) {
+            String[] datosBombero = nombreBombero.split(" - DNI: "); 
 
-        if (datosBombero.length == 2) {
-            String[] datosNombre = datosBombero[0].split("\\. "); // Dividir por ". "
-            
-            if (datosNombre.length == 2) {
-                String idBombero = datosNombre[0];
-                String nombreApellido = datosNombre[1];
-                String dni = datosBombero[1];
+            if (datosBombero.length == 2) {
+                String[] datosNombre = datosBombero[0].split("\\. "); 
 
-                modelo2.addRow(new Object[]{idBombero, nombreApellido, dni, ""});
+                if (datosNombre.length == 2) {
+                    String idBombero = datosNombre[0];
+                    String nombreApellido = datosNombre[1];
+                    String dni = datosBombero[1];
+
+                    modelo2.addRow(new Object[]{idBombero, nombreApellido, dni, ""});
+                }
             }
         }
+
+        jTBombero.repaint();
     }
-
-    jTBombero.repaint();
+private void limpiarTabla(DefaultTableModel modelo) {
+    modelo.setRowCount(0);
 }
-
-
 }

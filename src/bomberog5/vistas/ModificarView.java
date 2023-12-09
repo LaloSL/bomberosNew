@@ -512,8 +512,13 @@ public class ModificarView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBSalirActionPerformed
 
     private void jBModifiCuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiCuaActionPerformed
-        actualizarCuartel();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Primero debe seleccionar un cuartel");
+            dispose();
+        } else {
+           actualizarCuartel();
         mostrarDatosCuartel();
+        }
     }//GEN-LAST:event_jBModifiCuaActionPerformed
 //-----------------------Radio Button brigada-------------------
     private void jRBBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBBrigadaActionPerformed
@@ -749,7 +754,22 @@ public class ModificarView extends javax.swing.JInternalFrame {
             double nuevaLatitud = Double.parseDouble(jTLatitud.getText());
             String nuevoTelefono = jTTelefono.getText();
             String nuevoCorreo = jTCorreo.getText();
+//-------------------------Validacion Nombre Cuartel-----------------------------
+        if (nuevoNombre.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+            limpiarCampos();
+            return;
+        }
 
+// Validar que no contenga solo numeros
+        if (!contieneLetras(nuevoNombre)) {
+            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+            limpiarCampos();
+            return;
+        }
+        
+        
+//------------------------- Fin Validacion Nombre Cuartel-----------------------------
             // Actualiza los datos en la base de datos
             String updateQuery = "UPDATE cuartel SET nombreCuartel=?, direccion=?, longitud=?, latitud=?, telefono=?, correo=? WHERE idCuartel=?";
             try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
@@ -1178,4 +1198,12 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
 //----------------------------------------------fin cabecera tabla bombero------------------------------------------------     
 //-----------------------------FIN CABECERA--------------------------------------    
+    private boolean contieneLetras(String input) {
+        for (char c : input.toCharArray()) {
+            if (Character.isLetter(c)) {
+                return true; // Contiene al menos una letra
+            }
+        }
+        return false; // No contiene letras
+        }
 }
