@@ -195,7 +195,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jBSalir))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(212, 212, 212))
+                                .addGap(203, 203, 203))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jCTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(128, 128, 128)
@@ -341,13 +341,13 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         int row = jTSinAct.getSelectedRow();
-        double latSin = Double.parseDouble(jTSinAct.getValueAt(row, 4).toString());
-        double longSin = Double.parseDouble(jTSinAct.getValueAt(row, 5).toString());
-        
+        double latitudSiniestro = Double.parseDouble(jTSinAct.getValueAt(row, 4).toString());
+        double longitudSiniestro = Double.parseDouble(jTSinAct.getValueAt(row, 5).toString());
+        String tipo = jTSinAct.getValueAt(row, 1).toString();
 
-        cua.obtenerDatosIdLongitudLatitud(latSin, longSin);
-        int cuaCer = cua.obtenerIdCuartelMasCercano(latSin, longSin);
-        mostrarBrigadasPorIdCuartel(cuaCer);
+        cua.obtenerDatosIdLongitudLatitud(latitudSiniestro, longitudSiniestro);
+        int cuaCer = cua.obtenerIdCuartelMasCercano(latitudSiniestro, longitudSiniestro, tipo);
+        mostrarBrigadasPorIdCuartel(cuaCer, tipo);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -367,7 +367,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jBAsignarBrigadaActionPerformed
     private void llenarComboEspecialidades() {
-        String[] tipo = sin.tipoSiniestro();
+        String[] tipo = briga.Especialidades();
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(tipo));
     }
 
@@ -471,19 +471,58 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 //        }
 //    }
     //-------lista brigada o brigadas segun el idcurtel
-    public void mostrarBrigadasPorIdCuartel(int idCuartel) {
+//    public void mostrarBrigadasPorIdCuartel(int idCuartel) {
+//        DefaultTableModel tbrigad = new DefaultTableModel();
+//        tbrigad.addColumn("IdBrigada");
+//        tbrigad.addColumn("Nombre de la brigada");
+//        tbrigad.addColumn("Especialidad");
+////        tbrigad.addColumn("Libre/Ocupada");
+////        tbrigad.addColumn("IdCuartel");
+//        jTBrigada.setModel(tbrigad);
+//
+//        try {
+//            String consulta = "SELECT idBrigada, nombreBrig, especialidad, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ?";
+//            PreparedStatement ps = con.prepareStatement(consulta);
+//            ps.setInt(1, idCuartel);
+//            ResultSet rs = ps.executeQuery();
+//
+//            boolean hayBrigadas = false;
+//
+//            while (rs.next()) {
+//                hayBrigadas = true;
+//                Object[] fila = {
+//                    rs.getInt("idBrigada"),
+//                    rs.getString("nombreBrig"),
+//                    rs.getString("especialidad"),
+//                    //                    rs.getInt("libre"),
+//                    rs.getInt("idCuartel")
+//                };
+//                tbrigad.addRow(fila);
+//            }
+//
+//            if (!hayBrigadas) {
+//                JOptionPane.showMessageDialog(null, "El cuartel más cercano no tiene brigadas.", "Sin Brigadas", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Manejar la excepción según tus necesidades
+//        }
+//    }
+    public void mostrarBrigadasPorIdCuartel(int idCuartel, String tipo) {
         DefaultTableModel tbrigad = new DefaultTableModel();
         tbrigad.addColumn("IdBrigada");
         tbrigad.addColumn("Nombre de la brigada");
         tbrigad.addColumn("Especialidad");
-//        tbrigad.addColumn("Libre/Ocupada");
-//        tbrigad.addColumn("IdCuartel");
+        //        tbrigad.addColumn("Libre/Ocupada");
+        //        tbrigad.addColumn("IdCuartel");
         jTBrigada.setModel(tbrigad);
 
         try {
-            String consulta = "SELECT idBrigada, nombreBrig, especialidad, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ?";
+            String consulta = "SELECT idBrigada, nombreBrig, especialidad, idCuartel FROM brigada WHERE estadoBr = 1 AND idCuartel = ? AND especialidad = ?";
             PreparedStatement ps = con.prepareStatement(consulta);
             ps.setInt(1, idCuartel);
+            ps.setString(2, tipo);
             ResultSet rs = ps.executeQuery();
 
             boolean hayBrigadas = false;
@@ -509,6 +548,19 @@ public class SiniestroView extends javax.swing.JInternalFrame {
             // Manejar la excepción según tus necesidades
         }
     }
+
+//    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+//
+//        int row = jTSinAct.getSelectedRow();
+//        double latSin = Double.parseDouble(jTSinAct.getValueAt(row, 4).toString());
+//        double longSin = Double.parseDouble(jTSinAct.getValueAt(row, 5).toString());
+//        String tipo = jCBrigadaTipo.getSelectedItem().toString(); // Obteniendo el tipo de brigada seleccionado en el JComboBox
+//
+//        cua.obtenerDatosIdLongitudLatitud(latSin, longSin);
+//        int cuaCer = cua.obtenerIdCuartelMasCercano(latSin, longSin);
+//        mostrarBrigadasPorIdCuartel(cuaCer, tipo);
+//
+//    }
 
     public void asignarBrigada(int idCodigo, int idBrigada) throws SQLException {
         String Siniestro = "UPDATE siniestro SET idBrigada = ? WHERE idCodigo = ?";

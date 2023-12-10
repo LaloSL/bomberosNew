@@ -5,6 +5,7 @@
  */
 package bomberog5.accesoDatos;
 
+import bomberog5.entidades.Brigada;
 import bomberog5.entidades.Cuartel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -122,40 +123,82 @@ public class CuartelData {
     }
 
 //calcula distancia y retorna id cuartel del cuartel mas cercano
-    public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro) {
-        int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
-        double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
-        
+//    public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro) {
+//        int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
+//        double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
+//
+//        try {
+//
+////          
+//            String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";//guille
+//
+//
+//            PreparedStatement ps = con.prepareStatement(consulta);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                int idCuartel = rs.getInt("idCuartel");
+//                double longitudCuartel = rs.getDouble("longitud");
+//                double latitudCuartel = rs.getDouble("latitud");
+//
+//                // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
+//                double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
+//                        + Math.pow((latitudCuartel - latitudSiniestro), 2));
+//
+//                if (distancia < distanciaMinima) {
+//                    distanciaMinima = distancia;
+//                    idCuartelMasCercano = idCuartel;
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Manejar la excepción según tus necesidades
+//        }
+//
+//        System.out.println("IdCuartel más cercano: " + idCuartelMasCercano + ", Distancia mínima: " + distanciaMinima);
+//        return idCuartelMasCercano;
+//    }
 
-        try {
-            String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";
-            PreparedStatement ps = con.prepareStatement(consulta);
-            ResultSet rs = ps.executeQuery();
+    public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro, String tipoBrigada) {
+    int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
+    double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
 
-            while (rs.next()) {
-                int idCuartel = rs.getInt("idCuartel");
-                double longitudCuartel = rs.getDouble("longitud");
-                double latitudCuartel = rs.getDouble("latitud");
+    try {
 
-                // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
-                double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
-                        + Math.pow((latitudCuartel - latitudSiniestro), 2));
+        String consulta = "SELECT cu.idCuartel, cu.longitud, cu.latitud, b.especialidad " +
+                           "FROM cuartel cu " +
+                           "JOIN brigada b ON cu.idCuartel = b.idCuartel " +
+                           "WHERE cu.estadoC = 1 AND b.especialidad = ? AND b.libre = 1";
 
-                if (distancia < distanciaMinima) {
-                    distanciaMinima = distancia;
-                    idCuartelMasCercano = idCuartel;
-                }
+        PreparedStatement ps = con.prepareStatement(consulta);
+        ps.setString(1, tipoBrigada);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int idCuartel = rs.getInt("idCuartel");
+            double longitudCuartel = rs.getDouble("longitud");
+            double latitudCuartel = rs.getDouble("latitud");
+
+            // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
+            double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
+                    + Math.pow((latitudCuartel - latitudSiniestro), 2));
+
+            if (distancia < distanciaMinima) {
+                distanciaMinima = distancia;
+                idCuartelMasCercano = idCuartel;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
 
-        System.out.println("IdCuartel más cercano: " + idCuartelMasCercano + ", Distancia mínima: " + distanciaMinima);
-        return idCuartelMasCercano;
+    } catch (Exception e) {
+        e.printStackTrace();
+        // Manejar la excepción según tus necesidades
     }
 
+    System.out.println("IdCuartel más cercano: " + idCuartelMasCercano + ", Distancia mínima: " + distanciaMinima);
+    return idCuartelMasCercano;
+}
+    
     
     
 //------------------------------------FIN ELIMINAR CUARTEL-----------------------------------------------    

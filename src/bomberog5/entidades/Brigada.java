@@ -48,6 +48,10 @@ public class Brigada {
     }
     //------------------------------------------FIN Sin idBrigada ni Objeto Cuartel y con int idCuartel---------------------------
 
+    public Brigada(int idBrigada, String tipo, String especialidadBrigada, int idCuartel) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getIdBrigada() {
         return idBrigada;
     }
