@@ -29,6 +29,7 @@ public class BrigadaData {
 
 public String[] Especialidades() {
         return new String[] {
+            
             "Incendios viviendas e Industrias",
             "Salvamento en derrumbes",
             "Rescates de montaña",

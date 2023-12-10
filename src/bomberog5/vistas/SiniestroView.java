@@ -40,6 +40,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
      */
     public SiniestroView() {
         initComponents();
+
         llenarComboEspecialidades();
 
         con = Conexion.getConexion();
@@ -119,7 +120,6 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTSinAct);
 
-        jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jCTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCTipoActionPerformed(evt);
@@ -321,7 +321,48 @@ public class SiniestroView extends javax.swing.JInternalFrame {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         try {
+            //        if (tipo == null || tipo.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Por favor, seleccione un tipo de siniestro.");
+//            return;
+//        }
+//
+//        if (hs == null || hs.isEmpty() || min == null || min.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Por favor, complete la hora y los minutos.");
+//            return;
+//        }
+//
+//        if (utilDate == null) {
+//            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha de siniestro.");
+//            return;
+//        }
+//        if (jTLatitud.getText() == null || jTLatitud.getText().isEmpty() || jTLongitud.getText() == null || jTLongitud.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en los campos 'Latitud' y 'Longitud'.");
+//            return;
+//        }
+//        if (detalle == null || detalle.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Por favor, complete el campo 'Detalles'.");
+//            return;
+//        }
+//
+//        try {
+//            int horaVal = Integer.parseInt(hs);
+//            int minVal = Integer.parseInt(min);
+//
+//            if (horaVal < 1 || horaVal > 24 || minVal < 0 || minVal > 59) {
+//                JOptionPane.showMessageDialog(null, "Por favor, ingrese un número del 1 al 24 en el campo 'Hora' y un número del 0 al 59 en el campo 'Minutos'.");
+//                return;
+//            }
+//
+//            if (latitud < 0 || longitud < 0) {
+//                JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en los campos 'Latitud' y 'Longitud'.");
+//                return;
+//            }
+
             sin.insertarSiniestro(tipo, sqlDate, hora, min, latitud, longitud, detalle);
+//         catch (NumberFormatException ex) {
+//            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en los campos 'Hora', 'Minutos', 'Latitud' y 'Longitud'.");
+//            return;
+//        
         } catch (SQLException ex) {
             Logger.getLogger(SiniestroView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -369,6 +410,7 @@ public class SiniestroView extends javax.swing.JInternalFrame {
     private void llenarComboEspecialidades() {
         String[] tipo = briga.Especialidades();
         jCTipo.setModel(new javax.swing.DefaultComboBoxModel<>(tipo));
+
     }
 
     public void llenarTablaSiniestrosActivos() {
@@ -561,7 +603,6 @@ public class SiniestroView extends javax.swing.JInternalFrame {
 //        mostrarBrigadasPorIdCuartel(cuaCer, tipo);
 //
 //    }
-
     public void asignarBrigada(int idCodigo, int idBrigada) throws SQLException {
         String Siniestro = "UPDATE siniestro SET idBrigada = ? WHERE idCodigo = ?";
         String Brigada = "UPDATE brigada SET estadoBr = FALSE WHERE idBrigada = ?";
