@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -243,10 +244,10 @@ public class EliminarNew extends javax.swing.JInternalFrame {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButtonCuartel)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonCuartel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jRadioButtonBombero)
-                            .addComponent(jRadioButtonBrigada))
+                            .addComponent(jRadioButtonBrigada, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(jLabel4))
@@ -282,9 +283,13 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jSalirActionPerformed
 //---------------------boton eliminar bombero
     private void jBEliminarBombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarBombActionPerformed
-        bomb.cambiarEstadoBombero(obtenerIdBomberoDesdeFilaSeleccionada());
-        mostrarDatosBomberos();
-        desBomberi();
+        int idBombero = obtenerIdBomberoDesdeFilaSeleccionada();
+
+        if (idBombero != -1) {
+            bomb.cambiarEstadoBombero(idBombero);
+            mostrarDatosBomberos();
+            desBomberi();
+        }
 
     }//GEN-LAST:event_jBEliminarBombActionPerformed
 //---------------------------------brigada---------------------------------------
@@ -302,13 +307,17 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     //-----------------eliminar brigada---------------------------------
     private void jBEliminarBrigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarBrigActionPerformed
         int idBrigada = obtenerIdBrigadaDesdeFilaSeleccionada();
-        List<Integer> idsBomberosAEliminar = bomb.obtenerIDsBomberosPorBrigada(idBrigada);
-        bomb.cambiarEstadoBomberosPorBrigada(idBrigada);
-        briga.cambiarEstadoBrigada(idBrigada);
-        mostrarDatosBomberos();
-        mostrarDatosBrigada();
-        desBrigada();
-        desBotonBrigada();
+
+        if (idBrigada != -1) {
+            List<Integer> idsBomberosAEliminar = bomb.obtenerIDsBomberosPorBrigada(idBrigada);
+            bomb.cambiarEstadoBomberosPorBrigada(idBrigada);
+            briga.cambiarEstadoBrigada(idBrigada);
+            mostrarDatosBomberos();
+            mostrarDatosBrigada();
+            desBrigada();
+            desBotonBrigada();
+        }
+
     }//GEN-LAST:event_jBEliminarBrigActionPerformed
 //--------------------------jradiobutton Cuartel--------------------------
     private void jRadioButtonCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonCuartelActionPerformed
@@ -322,16 +331,20 @@ public class EliminarNew extends javax.swing.JInternalFrame {
 //----------------------------------jbutton Eliminar cuartel-------------------
     private void jBEliminarCuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarCuaActionPerformed
         int idCuartel = obtenerIdCuartel();
-        List<Integer> idsBrigadas = briga.obtenerIdsBrigadasPorIdCuartel(idCuartel);
-        bomb.eliminarBomberosPorIdsBrigadas(idsBrigadas);
-        briga.cambiarEstadoBrigadas(idsBrigadas);
-        cua.cambiarEstadoCuartel(idCuartel);
-        mostrarDatosBomberos();
-        mostrarDatosBrigada();
-        mostrarDatosCuartel();
-        desBrigada();
-        desBotonBrigada();
-        desCuartel();
+
+        if (idCuartel != -1) {
+            List<Integer> idsBrigadas = briga.obtenerIdsBrigadasPorIdCuartel(idCuartel);
+            bomb.eliminarBomberosPorIdsBrigadas(idsBrigadas);
+            briga.cambiarEstadoBrigadas(idsBrigadas);
+            cua.cambiarEstadoCuartel(idCuartel);
+            mostrarDatosBomberos();
+            mostrarDatosBrigada();
+            mostrarDatosCuartel();
+            desBrigada();
+            desBotonBrigada();
+            desCuartel();
+        }
+
     }//GEN-LAST:event_jBEliminarCuaActionPerformed
 
 
@@ -524,19 +537,22 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private int obtenerIdBomberoDesdeFilaSeleccionada() {
         int idBombero = -1;
 
-        if (filaSeleccionadaBombero != -1) {
-            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla
+        if (jTBombero != null && filaSeleccionadaBombero != -1 && jTBombero.getColumnCount() > 0) {
             Object idBomberoObj = jTBombero.getValueAt(filaSeleccionadaBombero, 0);
 
             if (idBomberoObj instanceof Integer) {
                 idBombero = (int) idBomberoObj;
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para el bombero.");
         }
-        System.out.println("idBombero " + idBombero);
-        return idBombero;
-    }
-    //-----------------idBombero de la fila seleccionada------------------
 
+        return idBombero;
+
+        //-----------------idBombero de la
+    }
+
+    //-----------------idBombero de la fila seleccionada------------------
 //--------------------------------------------------------------------FIN BOMBERO-----------------------------------------------------------    
 //---------------------------------------------------------------------BRIGADA------------------------------------------------------------
     public void radiobuttonBrigada() {
@@ -564,18 +580,20 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private int obtenerIdBrigadaDesdeFilaSeleccionada() {
         int idBrigada = -1;
 
-        if (filaSeleccionadaBrigada != -1) {
-            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla de brigadas
+        if (jTBrigada != null && filaSeleccionadaBrigada != -1 && jTBrigada.getColumnCount() > 0) {
             Object idBrigadaObj = jTBrigada.getValueAt(filaSeleccionadaBrigada, 0);
 
             if (idBrigadaObj instanceof Integer) {
                 idBrigada = (int) idBrigadaObj;
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para la brigada");
         }
+
         return idBrigada;
     }
-    //--------------------------fin idBrigada de la fila seleccionada---------------------------  
 
+    //--------------------------fin idBrigada de la fila seleccionada---------------------------  
     //--------------------dehabilita jbuttonEliminar Brigada------------------------------
     private void desBotonBrigada() {
         jBEliminarBrig.setEnabled(false);
@@ -609,14 +627,16 @@ public class EliminarNew extends javax.swing.JInternalFrame {
     private int obtenerIdCuartel() {
         int idCuartel = -1;
 
-        if (filaSeleccionada != -1) {
-            // Reemplaza 0 con el índice de la columna que contiene el ID en tu tabla de cuarteles
+        if (jTCuartel != null && filaSeleccionada != -1 && jTCuartel.getColumnCount() > 0) {
             Object idCuartelObj = jTCuartel.getValueAt(filaSeleccionada, 0);
 
             if (idCuartelObj instanceof Integer) {
                 idCuartel = (int) idCuartelObj;
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila");
         }
+
         return idCuartel;
     }
 

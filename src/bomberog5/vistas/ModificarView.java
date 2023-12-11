@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package bomberog5.vistas;
 
 import bomberog5.accesoDatos.BomberoData;
@@ -25,10 +21,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Asus
- */
+
 public class ModificarView extends javax.swing.JInternalFrame {
 
     private DefaultTableModel modelo = new DefaultTableModel(); //tabla cuartel
@@ -50,10 +43,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
         cabeceraBombero();
         con = Conexion.getConexion();
         //---------------cuartel-------------------------------------------------------------
-        //actualiza los datos en los jtextfiel segun la fila seleccionada en cuartel
         jTCuartel.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                // Manejar el evento de selección de la tabla aquí
                 filaSeleccionada = jTCuartel.getSelectedRow();
                 if (filaSeleccionada != -1) {
                     llenarCampos();
@@ -66,7 +57,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
         //--------------------------brigada-------------------------------
         jTBrigada.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                // Manejar el evento de selección de la tabla aquí
                 filaSeleccionadaBrigada = jTBrigada.getSelectedRow();
                 if (filaSeleccionadaBrigada != -1) {
                     llenarCamposBrigada();
@@ -294,201 +284,185 @@ public class ModificarView extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(jRBCuartel)
-                .addGap(370, 370, 370)
-                .addComponent(jRBBrigada)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jRBBombero)
-                .addGap(259, 259, 259))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jBModifiCua)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBModifiBri)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBModifiBomb)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBLimpiar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBSalir)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jBModifiBri)
-                                        .addGap(413, 413, 413))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jBModifiCua)
-                                        .addGap(134, 134, 134)
-                                        .addComponent(jBLimpiar)
-                                        .addGap(338, 338, 338)
-                                        .addComponent(jBSalir)
-                                        .addGap(136, 136, 136)
-                                        .addComponent(jBModifiBomb)))
-                                .addGap(0, 24, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel14)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel2))
-                                        .addGap(51, 51, 51)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                                            .addComponent(jTNombreCua)
-                                            .addComponent(jTDireccion)
-                                            .addComponent(jTLongitud)
-                                            .addComponent(jTLatitud)
-                                            .addComponent(jTCorreo))
-                                        .addGap(99, 99, 99)
-                                        .addComponent(jLabel15)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTNombreBri)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(157, 157, 157)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(jLabel19))
-                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTGrupoSan)
-                                    .addComponent(jTNombreBom)
-                                    .addComponent(jTDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTCelular1)
-                                    .addComponent(jTNacTabla, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jRadioButton1)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
+                                    .addComponent(jTLatitud, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(jTTelefono)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jTLongitud)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jTCorreo)
+                                    .addComponent(jTNombreCua)
+                                    .addComponent(jTDireccion))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTNombreBri, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(48, 48, 48)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jTDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTNombreBom, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jTGrupoSan, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTNacTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jRadioButton1)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jTCelular1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(100, 100, 100))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(78, 78, 78))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(197, 197, 197)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel16))
+                        .addGap(111, 720, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel17))
-                        .addGap(57, 57, 57)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane3)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(478, 478, 478)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(135, 135, 135))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(142, 142, 142)
+                                        .addComponent(jRBBrigada))
+                                    .addComponent(jRBCuartel))
+                                .addGap(93, 93, 93)
+                                .addComponent(jRBBombero)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(20, 20, 20)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRBCuartel)
                     .addComponent(jRBBrigada)
                     .addComponent(jRBBombero))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel13)
-                        .addGap(95, 95, 95)
-                        .addComponent(jLabel16))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel17)
-                        .addGap(34, 34, 34)))
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTNombreCua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jTDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jTLongitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTLatitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jTNombreBri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(51, 51, 51)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jTCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(jTDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jTNombreBom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTGrupoSan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTNacTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addGap(12, 12, 12))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTCelular1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel7)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBModifiCua)
-                    .addComponent(jBLimpiar)
-                    .addComponent(jBModifiBri)
-                    .addComponent(jBSalir)
-                    .addComponent(jBModifiBomb))
-                .addGap(51, 51, 51))
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTNombreCua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel3)
+                                .addComponent(jTDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(jLabel4)
+                                .addGap(10, 10, 10)
+                                .addComponent(jTLongitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addGap(10, 10, 10)
+                                .addComponent(jTLatitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(7, 7, 7)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel8))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBModifiCua)
+                            .addComponent(jBModifiBri)
+                            .addComponent(jBModifiBomb)
+                            .addComponent(jBLimpiar)
+                            .addComponent(jBSalir)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTNombreBom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTNombreBri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel14)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTGrupoSan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTNacTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButton1)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTCelular1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -516,8 +490,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Primero debe seleccionar un cuartel");
             dispose();
         } else {
-           actualizarCuartel();
-        mostrarDatosCuartel();
+            actualizarCuartel();
+            mostrarDatosCuartel();
         }
     }//GEN-LAST:event_jBModifiCuaActionPerformed
 //-----------------------Radio Button brigada-------------------
@@ -699,8 +673,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getInt("idCuartel"),
                     rs.getString("nombreCuartel"),
                     rs.getString("direccion"),
-                    rs.getDouble("longitud"), // Cambié a double ya que podría ser un valor decimal
-                    rs.getDouble("latitud"), // Cambié a double
+                    rs.getDouble("longitud"), 
+                    rs.getDouble("latitud"), 
                     rs.getString("telefono"),
                     rs.getString("correo")
                 };
@@ -709,14 +683,12 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
     }
 
     //-------------------Fin LLena la tabla JCuartel ------------------------
     //------------------------limpia campos-----------------------------------
     private void limpiarCampos() {
-        // Limpia los JTextField u otros componentes según sea necesario
         jTNombreCua.setText("");
         jTDireccion.setText("");
         jTLongitud.setText("");
@@ -728,7 +700,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
 //--------------------------llena los jtextfiel con la info de la tabla cuartel---------------------------------------------    
     private void llenarCampos() {
-        // Obtiene el índice de la fila seleccionada
         filaSeleccionada = jTCuartel.getSelectedRow();
 
         // Llena los JTextField con los datos de la fila seleccionada
@@ -743,6 +714,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
 //--------------------------actualiza los datos de la tabla con el boton modificar-------------------------------    
     private void actualizarCuartel() {
+        double nuevaLongitud = 0.0;
+        double nuevaLatitud = 0.0;
         try {
             // Obtén el ID del cuartel de la fila seleccionada
             int idCuartel = (int) jTCuartel.getValueAt(filaSeleccionada, 0);
@@ -750,26 +723,92 @@ public class ModificarView extends javax.swing.JInternalFrame {
             // Obtén los nuevos valores de los campos de texto
             String nuevoNombre = jTNombreCua.getText();
             String nuevaDireccion = jTDireccion.getText();
-            double nuevaLongitud = Double.parseDouble(jTLongitud.getText());
-            double nuevaLatitud = Double.parseDouble(jTLatitud.getText());
+            String textoLongitud = jTLongitud.getText();
+            String textoLatitud = jTLatitud.getText();
+
+            if (!textoLongitud.isEmpty()) {
+                try {
+                    nuevaLongitud = Double.parseDouble(textoLongitud);
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud válida.");
+                    jTLongitud.setText("");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud.");
+            }
+
+            if (!textoLatitud.isEmpty()) {
+                try {
+                    nuevaLatitud = Double.parseDouble(textoLatitud);
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud válida.");
+                    jTLatitud.setText("");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud.");
+            }
+
             String nuevoTelefono = jTTelefono.getText();
             String nuevoCorreo = jTCorreo.getText();
-//-------------------------Validacion Nombre Cuartel-----------------------------
-        if (nuevoNombre.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-            limpiarCampos();
-            return;
-        }
+//-------------------------Validacion Cuartel-----------------------------
+            if (nuevoNombre.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+                jTNombreCua.setText("");
+                return;
+            }
 
 // Validar que no contenga solo numeros
-        if (!contieneLetras(nuevoNombre)) {
-            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-            limpiarCampos();
-            return;
-        }
-        
-        
-//------------------------- Fin Validacion Nombre Cuartel-----------------------------
+            if (!contieneLetras(nuevoNombre)) {
+                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+                jTNombreCua.setText("");
+                return;
+            }
+
+            if (nuevaDireccion.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+                jTDireccion.setText("");
+                return;
+            }
+
+            // Validar que no contenga solo numeros
+            if (!contieneLetras(nuevaDireccion)) {
+                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+                jTDireccion.setText("");
+                return;
+            }
+
+            //-------------------------Validacion Telefono Cuartel-----------------------------
+            if (nuevoTelefono.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
+                jTTelefono.setText("");
+                return;
+            }
+
+// Validar que el campo contenga solo números
+            if (!esNumeroValido(nuevoTelefono)) {
+                JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
+                jTTelefono.setText("");
+                return;
+            }
+
+//------------------------- Validacion Telefono Cuartel-----------------------------
+//-------------------------Validacion correo Cuartel-----------------------------
+            if (nuevoCorreo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
+                jTCorreo.setText("");
+                return;
+            }
+
+            if (!nuevoCorreo.contains("@")) {
+                JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
+                jTCorreo.setText("");
+                return;
+            }
+//------------------------- Validacion correo Cuartel-----------------------------
+
+//------------------------- Fin Validacion Cuartel-----------------------------
             // Actualiza los datos en la base de datos
             String updateQuery = "UPDATE cuartel SET nombreCuartel=?, direccion=?, longitud=?, latitud=?, telefono=?, correo=? WHERE idCuartel=?";
             try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
@@ -790,7 +829,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
             }
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
     }
 //--------------------------fin actualiza los datos de la tabla con el boton modificar-------------------------------   
@@ -864,7 +902,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
         jTBrigada.setModel(tbrigad);
 
         try {
-            // Suponiendo que 'con' es tu conexión a la base de datos
             String consulta = "SELECT `idBrigada`, `nombreBrig`, `especialidad`, `libre`, `idCuartel`FROM `brigada` WHERE `estadoBr`=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
@@ -874,15 +911,14 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getInt("idBrigada"),
                     rs.getString("nombreBrig"),
                     rs.getString("especialidad"),
-                    rs.getInt("libre"), // Cambié a double ya que podría ser un valor decimal
-                    rs.getInt("idCuartel"), // Cambié a double
+                    rs.getInt("libre"), 
+                    rs.getInt("idCuartel"), 
                 };
                 tbrigad.addRow(fila);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
     }
 
@@ -892,6 +928,21 @@ public class ModificarView extends javax.swing.JInternalFrame {
         try {
             int idBrigada = (int) jTBrigada.getValueAt(filaSeleccionadaBrigada, 0);
             String nuevoNombre = jTNombreBri.getText();
+            //-------------------validar nombre-------------------------------      
+            if (nuevoNombre.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+                jTNombreBri.setText("");
+                return;
+            }
+
+            // Validar que no contenga solo numeros
+            if (!contieneLetras(nuevoNombre)) {
+                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+                jTNombreBri.setText("");
+                return;
+            }
+
+            //-------------------fin validar nombre-------------------------------     
             String nuevaEspecialidad = jComboBox1.getSelectedItem().toString();
 
             String updateQuery = "UPDATE brigada SET nombreBrig=?, especialidad=? WHERE idBrigada=?";
@@ -909,7 +960,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
             }
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
     }
 //-------------------------------------actualiza los datos de la brigada-----------------------------------------
@@ -994,7 +1044,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getString("dni"),
                     rs.getString("nombreApellido"),
                     rs.getString("grupoSanguineo"),
-                    fechaNacFormateada, // Usar la fecha formateada o cadena vacía si la fecha es null
+                    fechaNacFormateada, 
                     rs.getString("celular"),
                     rs.getInt("idBrigada")
                 };
@@ -1002,7 +1052,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Manejar la excepción según tus necesidades
         }
     }
 
@@ -1020,25 +1069,21 @@ public class ModificarView extends javax.swing.JInternalFrame {
             String fechaNacimientoStr = jTBombero.getValueAt(filaSeleccionadaBombero, 4).toString();
             String celular = jTBombero.getValueAt(filaSeleccionadaBombero, 5).toString();
 
-            // Asignar valores a los campos del formulario
+           
             jTDNI.setText(dni);
             jTNombreBom.setText(nombreApellido);
             jTGrupoSan.setText(grupoSanguineo);
             jTCelular1.setText(celular);
 
             try {
-                // Convertir la cadena a un objeto Date
                 Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
 
                 if (fechaNacimiento != null) {
-                    // Formatear la fecha de nacimiento a una cadena (ajusta el formato según tus necesidades)
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String fechaNacFormateada = dateFormat.format(fechaNacimiento);
 
-                    // Configurar la fecha en el jTNacTabla
                     jTNacTabla.setText(fechaNacFormateada);
                 } else {
-                    // Si la fecha es nula, puedes manejarlo de alguna manera (por ejemplo, limpiar el jTNacTabla)
                     jTNacTabla.setText("");
                 }
                 System.out.println("Fecha de Nacimiento: " + fechaNacimiento);
@@ -1051,12 +1096,46 @@ public class ModificarView extends javax.swing.JInternalFrame {
 //--------------fin llena los jtextFiel con los datos de la tabla bombero-----------------------------
 //-----------------------------------actualiza los datos bomberos------------------------------------
     private void actualizarBomberoConOpcionFecha() {
-        // Obtener los nuevos valores de los campos
         String nuevoDNI = jTDNI.getText();
         String nuevoNombre = jTNombreBom.getText();
         String nuevoGrupoSanguineo = jTGrupoSan.getText();
         String nuevoCelular = jTCelular1.getText();
 
+        //--------------------------validar campos---------------------------
+        if (!esDniValido(nuevoDNI)) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
+            jTDNI.setText("");
+            return;
+        }
+
+        // Validar nombre
+        if (nuevoNombre.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
+            jTNombreBom.setText("");
+            return;
+        }
+
+        // Validar grupo sanguíneo
+        if (nuevoGrupoSanguineo.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
+            jTGrupoSan.setText("");
+            return;
+        }
+
+        if (nuevoCelular.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de celular.");
+            jTCelular1.setText("");
+            return;
+        }
+
+        // Validar que el campo contenga solo números
+        if (!esNumeroValido(nuevoCelular)) {
+            JOptionPane.showMessageDialog(null, "El número de celular no puede contener letras ni caracteres especiales.");
+            jTCelular1.setText("");
+            return;
+        }
+
+        //--------------------------fin validar campos---------------------------
         // Validar si el JRadioButton está habilitado
         if (jRadioButton1.isSelected()) {
             // El JRadioButton está habilitado, tomar la fecha de nacimiento del JDateChooser
@@ -1064,72 +1143,54 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
             // Realizar la actualización en la base de datos con todos los datos
             try {
-                // Preparar la sentencia SQL UPDATE
                 String consulta = "UPDATE bombero SET dni=?, nombreApellido=?, grupoSanguineo=?, fechaNac=?, celular=? WHERE idBombero=?";
                 PreparedStatement ps = con.prepareStatement(consulta);
 
-                // Asignar los nuevos valores a los parámetros de la sentencia SQL
                 ps.setString(1, nuevoDNI);
                 ps.setString(2, nuevoNombre);
                 ps.setString(3, nuevoGrupoSanguineo);
                 ps.setDate(4, new java.sql.Date(nuevaFechaNacimiento.getTime()));
                 ps.setString(5, nuevoCelular);
 
-                // Obtener el idBombero de la fila seleccionada
                 int idBombero = (int) jTBombero.getValueAt(filaSeleccionadaBombero, 0);
                 ps.setInt(6, idBombero);
 
-                // Ejecutar la actualización
                 int filasActualizadas = ps.executeUpdate();
 
-                // Verificar si se actualizaron filas
                 if (filasActualizadas > 0) {
-                    // Informar sobre la actualización exitosa
                     JOptionPane.showMessageDialog(this, "Bombero actualizado correctamente");
-                    // Volver a cargar los datos en la tabla después de la actualización
                     mostrarDatosBomberos();
                 } else {
-                    // Informar si no se actualizó ninguna fila (puede deberse a un idBombero incorrecto)
                     JOptionPane.showMessageDialog(this, "No se pudo actualizar el bombero. Verifica el idBombero.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Manejar las excepciones según sea necesario
             }
 
         } else {
             // El JRadioButton no está habilitado, realizar la actualización sin la fecha de nacimiento
             try {
-                // Preparar la sentencia SQL UPDATE sin la fecha de nacimiento
                 String consulta = "UPDATE bombero SET dni=?, nombreApellido=?, grupoSanguineo=?, celular=? WHERE idBombero=?";
                 PreparedStatement ps = con.prepareStatement(consulta);
 
-                // Asignar los nuevos valores a los parámetros de la sentencia SQL
                 ps.setString(1, nuevoDNI);
                 ps.setString(2, nuevoNombre);
                 ps.setString(3, nuevoGrupoSanguineo);
                 ps.setString(4, nuevoCelular);
 
-                // Obtener el idBombero de la fila seleccionada
                 int idBombero = (int) jTBombero.getValueAt(filaSeleccionadaBombero, 0);
                 ps.setInt(5, idBombero);
 
-                // Ejecutar la actualización
                 int filasActualizadas = ps.executeUpdate();
 
-                // Verificar si se actualizaron filas
                 if (filasActualizadas > 0) {
-                    // Informar sobre la actualización exitosa
                     JOptionPane.showMessageDialog(this, "Bombero actualizado correctamente");
-                    // Volver a cargar los datos en la tabla después de la actualización
                     mostrarDatosBomberos();
                 } else {
-                    // Informar si no se actualizó ninguna fila (puede deberse a un idBombero incorrecto)
                     JOptionPane.showMessageDialog(this, "No se pudo actualizar el bombero. Verifica el idBombero.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Manejar las excepciones según sea necesario
             }
         }
     }
@@ -1141,19 +1202,14 @@ public class ModificarView extends javax.swing.JInternalFrame {
     }
 
     private void actualizarFechaNacimiento() {
-        // Obtener la fecha seleccionada del JDateChooser
         Date fechaNacimiento = jDateChooser1.getDate();
 
-        // Verificar si se seleccionó una fecha
         if (fechaNacimiento != null) {
-            // Formatear la fecha en un formato deseado
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String fechaFormateada = dateFormat.format(fechaNacimiento);
 
-            // Colocar la fecha formateada en el JTextField
             jTNacTabla.setText(fechaFormateada);
         } else {
-            // Limpiar el JTextField si no hay fecha seleccionada
             jTNacTabla.setText("");
         }
     }
@@ -1201,9 +1257,23 @@ public class ModificarView extends javax.swing.JInternalFrame {
     private boolean contieneLetras(String input) {
         for (char c : input.toCharArray()) {
             if (Character.isLetter(c)) {
-                return true; // Contiene al menos una letra
+                return true;
             }
         }
-        return false; // No contiene letras
+        return false;
+    }
+
+    // Validar si la cadena de numero ingresado es valido
+    private boolean esNumeroValido(String input) {
+        return input.matches("\\d+");
+    }
+
+    private boolean esDniValido(String dniText) {
+        try {
+            int dni = Integer.parseInt(dniText);
+            return dni > 0;
+        } catch (NumberFormatException e) {
+            return false;
         }
+    }
 }

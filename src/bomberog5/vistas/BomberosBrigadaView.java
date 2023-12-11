@@ -162,10 +162,10 @@ public class BomberosBrigadaView extends javax.swing.JInternalFrame {
             dispose();
         } else {
             int idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
-            //BrigadaIna();
+           
             List<String> nombresBomberos = bomb.mostrarOpcionesBomberosPorBrigada(idBrigadaSeleccionada);
             mostrarBomberosEnTabla(nombresBomberos);
-           // bomberosIna();
+           
         }
 
     }//GEN-LAST:event_jBConsultarActionPerformed
