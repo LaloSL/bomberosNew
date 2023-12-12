@@ -31,7 +31,7 @@ import java.time.ZoneId;
  * @author Asus
  */
 public class AgregarView extends javax.swing.JInternalFrame {
-    
+
     private DefaultTableModel modelo = new DefaultTableModel(); //tabla cuartel
     private DefaultTableModel modelo1 = new DefaultTableModel(); //tabla brigada
     private CuartelData cua = new CuartelData();
@@ -41,10 +41,10 @@ public class AgregarView extends javax.swing.JInternalFrame {
     public int idCuart = 0;
     private int idCuartelSeleccionado = 0;
     private int idBrigadaSeleccionada = 0;
-    
+
     public AgregarView() {
         initComponents();
-        inicioComponentes();
+        //inicioComponentes();
         cabeceraCuartel();
         cabeceraBrigadal();
         con = Conexion.getConexion();
@@ -436,7 +436,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 //---------------------------------------------GUARDAR CUARTEL----------------------------------------------
     private void jBGuardarCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarCuartelActionPerformed
-        
+
         String nombreCuartel = jNombreCuartel.getText();
         String direccion = jDireccionCuartel.getText();
         double longitud, latitud;
@@ -454,7 +454,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
             limpiarCampos();
             return;
         }
-        
+
         String telefono = jTelefonoCuartel.getText();
         String correo = jCorreoCuartel.getText();
 
@@ -490,9 +490,9 @@ public class AgregarView extends javax.swing.JInternalFrame {
 
 //-------------------------Validacion Coordenada Cuartel-----------------------------
         String textoCoordX = jCoordX.getText().trim();
-        
+
         String textoCoordY = jCoordY.getText().trim();
-        
+
         if (textoCoordX.isEmpty() || textoCoordY.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Uno o ambos campos de coordenadas están vacíos. Por favor, ingrese valores.");
             limpiarCampos();
@@ -521,7 +521,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
             limpiarCampos();
             return;
         }
-        
+
         if (!correo.contains("@")) {
             JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
             limpiarCampos();
@@ -537,10 +537,12 @@ public class AgregarView extends javax.swing.JInternalFrame {
         cuar2.setTelefono(telefono);
         cuar2.setCorreo(correo);
         cuar2.setEstadoC(true);
-        
+
         cua.guardarCuartel(cuar2);
         limpiarCampos();
-        dispose();
+
+        inicioComponentes();
+        //dispose();
 
     }//GEN-LAST:event_jBGuardarCuartelActionPerformed
 //-----------------------------------Radio Button Cuartel--------------------------------
@@ -548,20 +550,18 @@ public class AgregarView extends javax.swing.JInternalFrame {
         radioButtonCuartel();
     }//GEN-LAST:event_jRBCuartelActionPerformed
 
-
 //---------------------------------------------Radio Button Brigada----------------------
     private void jRBBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBBrigadaActionPerformed
         radioButtonBrigada();
         mostrarDatosCuartel();
         llenarComboEspecialidades();
-        
+
 
     }//GEN-LAST:event_jRBBrigadaActionPerformed
 //---------------------------------------------Fin Radio Button Brigada----------------------
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
         dispose();
     }//GEN-LAST:event_jBSalirActionPerformed
-
 
 //------------------------------------Radio Button Bombero-------------------------------------
     private void jRBBomberoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBBomberoActionPerformed
@@ -573,12 +573,12 @@ public class AgregarView extends javax.swing.JInternalFrame {
 //------------------------------------ fin Radio Button Bombero-------------------------------------
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         limpiarCampos();
+        inicioComponentes();
     }//GEN-LAST:event_jButton1ActionPerformed
-
 
 //--------------------------------------------------------------------GUARDAR BRIGADA---------------------------------------------
     private void jBGuardarBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarBrigadaActionPerformed
-        
+
         idCuartelSeleccionado = obtenerIdCuartelSeleccionado();
         CuartelIna();
         if (briga.hayCupoParaNuevaBrigada(idCuartelSeleccionado)) {
@@ -603,7 +603,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
                     briga.guardarBrigada(brigada);
                     JOptionPane.showMessageDialog(null, "Brigada cargada");
                     limpiarCampos();
-                    dispose();
+                    // dispose();
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "El nombre de la brigada no es válido.");
@@ -613,16 +613,15 @@ public class AgregarView extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "El cuartel está completo. No se puede agregar más brigadas.");
             limpiarCampos();
         }
-        
+        inicioComponentes();
 
     }//GEN-LAST:event_jBGuardarBrigadaActionPerformed
-
 
 //-----------------------Boton guardar Bombero-------------------------
     private void jBGuardarBomberoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarBomberoActionPerformed
         idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
         BrigadaIna();
-        
+
         if (bomb.hayCupoParaNuevoBombero(idBrigadaSeleccionada)) {
             String dniText = jTDNI.getText();
             String nombreApellido = jTNombre.getText();
@@ -634,7 +633,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
                 limpiarCampos();
                 return;
             }
-            
+
             int dni = Integer.parseInt(dniText);
 
             // Validar nombre
@@ -650,16 +649,16 @@ public class AgregarView extends javax.swing.JInternalFrame {
                 limpiarCampos();
                 return;
             }
-            
+
             java.util.Date sfecha = jdFechaNacimiento.getDate();
             LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            
+
             if (!esMayorDe18Anios(fechaNac)) {
                 JOptionPane.showMessageDialog(null, "El bombero debe ser mayor de 18 años.");
                 limpiarCampos();
                 return;
             }
-            
+
             String celular = jTCelular.getText();
             Bombero bombero = new Bombero();
             bombero.setDni(dni);
@@ -671,14 +670,15 @@ public class AgregarView extends javax.swing.JInternalFrame {
             bombero.setIdBrigada(idBrigadaSeleccionada);
             bomb.guardarBombero(bombero);
             limpiarCampos();
-            dispose();
-            
+            //dispose();
+
         } else {
             JOptionPane.showMessageDialog(null, "Brigada Completa. No se puede agregar más bomberos.");
             limpiarCampos();
         }
+        inicioComponentes();
     }
-    
+
     private boolean esDniValido(String dniText) {
         // Verificar si el DNI es un número entero positivo
         try {
@@ -687,12 +687,12 @@ public class AgregarView extends javax.swing.JInternalFrame {
         } catch (NumberFormatException e) {
             return false;
         }
-        
+
 
     }//GEN-LAST:event_jBGuardarBomberoActionPerformed
 
 //-----------------------Fin Boton guardar Bombero-------------------------
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Correo;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -763,6 +763,14 @@ public class AgregarView extends javax.swing.JInternalFrame {
         jBGuardarCuartel.setEnabled(false);
         jBGuardarBombero.setEnabled(false);
         jBGuardarBrigada.setEnabled(false);
+
+        jRBCuartel.setEnabled(true);
+        jRBBrigada.setEnabled(true);
+        jRBBombero.setEnabled(true);
+
+        jRBCuartel.setSelected(false);
+        jRBBrigada.setSelected(false);
+        jRBBombero.setSelected(false);
     }
 
 //---------------------------------------FIN INICIO--------------------------------------------------------     
@@ -815,6 +823,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
         jBGuardarBrigada.setEnabled(true);
         jRBCuartel.setEnabled(false);
         jRBBombero.setEnabled(false);
+
     }
 //----------------------------------FIN jRButon Brigada seleccionado (deshabilita resto de los componentes)----------------------------------------  
 
@@ -879,7 +888,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
         jTCelular.setText("");
         jTextField1.setText("");
         jCBEspecialidad.setSelectedIndex(0);
-        
+
         jNombreCuartel.setText("");
         jDireccionCuartel.setText("");
         jCoordX.setText("");
@@ -896,13 +905,13 @@ public class AgregarView extends javax.swing.JInternalFrame {
         tcuar.addColumn("Id");
         tcuar.addColumn("Nombre");
         jTCuartel.setModel(tcuar);
-        
+
         try {
             // Suponiendo que 'con' es tu conexión a la base de datos
             String consulta = "SELECT idCuartel, nombreCuartel FROM cuartel WHERE estadoC=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("idCuartel"),
@@ -910,7 +919,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
                 };
                 tcuar.addRow(fila);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             // Manejar la excepción según tus necesidades
@@ -940,7 +949,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
     //--------------inhabilita la tabla cuartel-------------------------------
     private void CuartelIna() {
         jTCuartel.setEnabled(false);
-        
+
     }
     //--------------Fin inhabilita la tabla cuartel-------------------------------
 
@@ -960,13 +969,13 @@ public class AgregarView extends javax.swing.JInternalFrame {
         tbrig.addColumn("Libre/Ocupada");
         tbrig.addColumn("IdCuartel");
         jTBrigada.setModel(tbrig);
-        
+
         try {
             // Suponiendo que 'con' es tu conexión a la base de datos
             String consulta = "SELECT `idBrigada`, `nombreBrig`, `especialidad`, `libre`, `idCuartel` FROM `brigada` WHERE `estadoBr`=1";
             PreparedStatement ps = con.prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("IdBrigada"),
@@ -977,7 +986,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
                 };
                 tbrig.addRow(fila);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             // Manejar la excepción según tus necesidades
@@ -1035,7 +1044,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
 //--------------inhabilita la tabla brigada-------------------------------
     private void BrigadaIna() {
         jTBrigada.setEnabled(false);
-        
+
     }
     //--------------Fin inhabilita la tabla brigada-------------------------------    
 
