@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -209,6 +211,8 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
         actualizarSiniestroSeleccionado();
         llenarTablaSiniestrosActivos();
         llenarTablaSiniestrosFinalizados();
+        limpiarCampos();
+        
     }//GEN-LAST:event_jBFinSinActionPerformed
 
     public void llenarTablaSiniestrosActivos() {
@@ -235,8 +239,8 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                     rs.getString("tipo"),
                     fecha.format(rs.getDate("fechaSiniestro")),
                     rs.getTime("horaSiniestro"),
-                   // rs.getInt("coordx"),
-                   // rs.getInt("coordY"),
+                    // rs.getInt("coordx"),
+                    // rs.getInt("coordY"),
                     rs.getString("detalles")
 
                 };
@@ -279,7 +283,7 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                 Object[] fila = {
                     rs.getString("idCodigo"),
                     rs.getString("tipo"),
-                    fecha1.format(rs.getDate("fechaResol")), 
+                    fecha1.format(rs.getDate("fechaResol")),
                     rs.getDate("fechaResol"),
                     rs.getTime("horaResol"),
                     rs.getInt("puntuacion"),
@@ -311,10 +315,37 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
     private void actualizarSiniestroSeleccionado() {
         int filaSeleccionada = jTSinAct1.getSelectedRow();
         if (filaSeleccionada != -1) {
-            int idCodigo = Integer.parseInt(jTSinAct1.getValueAt(filaSeleccionada, 0).toString());
-            String consulta = "UPDATE siniestro SET fechaResol = ?, horaResol = ?, puntuacion = ?, estadoS = ? WHERE idCodigo = ?";
-
             try {
+                if (jDFechaResol.getDate() == null) {
+                    JOptionPane.showMessageDialog(this, "Favor seleccionar fecha de resolucion");
+                    return;
+                }
+
+                String hora = jTHoraRes.getText();
+                String minutos = jTMinResol.getText();
+                if (hora.isEmpty() || minutos.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Ingrese la hora de resolución");
+                    return;
+                }
+                int hs = Integer.parseInt(hora);
+                int min = Integer.parseInt(minutos);
+
+                if (hs < 0 || hs > 23 || min < 0 || min > 59) {
+                    JOptionPane.showMessageDialog(this, "Ingrese una hora de resolución valida");
+                    return;
+
+                }
+
+                int puntuacion = Integer.parseInt(jCPuntos.getSelectedItem().toString());
+                if (puntuacion < 0 || puntuacion > 5) {
+                    JOptionPane.showMessageDialog(this, "Ingresa una puntuación válida (entre 0 y 5)");
+                    return;
+
+                }
+                int idCodigo = Integer.parseInt(jTSinAct1.getValueAt(filaSeleccionada, 0).toString());
+                String consulta = "UPDATE siniestro SET fechaResol = ?, horaResol = ?, puntuacion = ?, estadoS = ? WHERE idCodigo = ?";
+
+//                try {
                 PreparedStatement ps = con.prepareStatement(consulta);
                 java.sql.Date fechaResol = new java.sql.Date(jDFechaResol.getDate().getTime());
                 LocalTime localTime = LocalTime.of(
@@ -322,8 +353,8 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
                         Integer.parseInt(jTMinResol.getText()));
                 java.sql.Time horaResol = java.sql.Time.valueOf(localTime);
 //                java.sql.Time horaResol = java.sql.Time.valueOf(jTHoraRes.getText() + ":" + jTMinResol.getText());                
-                int puntuacion = Integer.parseInt(jCPuntos.getSelectedItem().toString());
 
+//                    int puntuacion = Integer.parseInt(jCPuntos.getSelectedItem().toString());
                 ps.setDate(1, fechaResol);
                 ps.setTime(2, horaResol);
                 ps.setInt(3, puntuacion);
@@ -332,21 +363,32 @@ public class ResolucionSiniestrosView extends javax.swing.JInternalFrame {
 
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Siniestro finalizado");
+                
 
                 //String consultaObtenerIdBrigada = "SELECT idBrigada FROM siniestro WHERE idCodigo = ?";
                 String consultaBrig = "UPDATE brigada SET estadoBr = 1 WHERE idBrigada = (SELECT idBrigada FROM siniestro WHERE idCodigo = ?)";
 
-                
                 PreparedStatement psBrigada = con.prepareStatement(consultaBrig);
                 psBrigada.setInt(1, idCodigo);
                 psBrigada.executeUpdate();
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error al convertir datos numéricos");
                 // Manejar la excepción según tus necesidades
+            } catch (SQLException ex) {
+                Logger.getLogger(ResolucionSiniestrosView.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
+
+    }
+
+    private void limpiarCampos() {
+
+        jDFechaResol.setDate(null);
+        jTHoraRes.setText("");
+        jTMinResol.setText("");
+        jCPuntos.setSelectedIndex(0);
     }
 
 
