@@ -1,4 +1,3 @@
-
 package bomberog5.vistas;
 
 import bomberog5.accesoDatos.BomberoData;
@@ -21,7 +20,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-
 public class ModificarView extends javax.swing.JInternalFrame {
 
     private DefaultTableModel modelo = new DefaultTableModel(); //tabla cuartel
@@ -37,7 +35,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
     public ModificarView() {
         initComponents();
-        inicio();
+//        inicio();
         cabeceraCuartel();
         cabeceraBrigadal();
         cabeceraBombero();
@@ -208,6 +206,11 @@ public class ModificarView extends javax.swing.JInternalFrame {
         });
 
         jBLimpiar.setText("Limpiar");
+        jBLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBLimpiarActionPerformed(evt);
+            }
+        });
 
         jBModifiCua.setText("Modificar Cuartel");
         jBModifiCua.addActionListener(new java.awt.event.ActionListener() {
@@ -396,6 +399,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
                                 .addComponent(jTNombreCua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel3)
+                                .addGap(0, 0, 0)
                                 .addComponent(jTDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(11, 11, 11)
                                 .addComponent(jLabel4)
@@ -441,6 +445,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
                                 .addComponent(jTNombreBri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel14)
+                                .addGap(0, 0, 0)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
@@ -479,6 +484,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
     private void jBModifiBriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiBriActionPerformed
         actualizarBrigada();
         mostrarDatosBrigada();
+        limpiarCampos();
+        inicio1();
     }//GEN-LAST:event_jBModifiBriActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
@@ -492,6 +499,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
         } else {
             actualizarCuartel();
             mostrarDatosCuartel();
+            limpiarCampos();
+            inicio1();
         }
     }//GEN-LAST:event_jBModifiCuaActionPerformed
 //-----------------------Radio Button brigada-------------------
@@ -519,6 +528,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
     private void jBModifiBombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiBombActionPerformed
         actualizarBomberoConOpcionFecha();
         mostrarDatosBomberos();
+        limpiarCampos();
+        inicio1();
     }//GEN-LAST:event_jBModifiBombActionPerformed
 
     private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
@@ -532,6 +543,11 @@ public class ModificarView extends javax.swing.JInternalFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jBLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimpiarActionPerformed
+        limpiarCampos();
+            inicio1();
+    }//GEN-LAST:event_jBLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -613,6 +629,50 @@ public class ModificarView extends javax.swing.JInternalFrame {
         jRBCuartel.setEnabled(true);
         jRBBrigada.setEnabled(true);
         jRBBombero.setEnabled(true);
+        jRBCuartel.setSelected(false);
+        jRBBrigada.setSelected(false);
+        jRBBombero.setSelected(false);
+    }
+
+    private void inicio1() {
+
+        jComboBox1.setEnabled(false);
+        jDateChooser1.setEnabled(false);
+        jTCuartel.setEnabled(false);
+        jTBrigada.setEnabled(false);
+        jTBombero.setEnabled(false);
+        jTNombreCua.setEnabled(false);
+        jTGrupoSan.setEnabled(false);
+        jTNombreBri.setEnabled(false);
+        jTDireccion.setEnabled(false);
+        jTLongitud.setEnabled(false);
+        jTLatitud.setEnabled(false);
+        jTTelefono.setEnabled(false);
+        jTNacTabla.setEnabled(false);
+        jTCorreo.setEnabled(false);
+        jTDNI.setEnabled(false);
+        jTCelular1.setEnabled(false);
+        jTNombreBom.setEnabled(false);
+        jBModifiBomb.setEnabled(false);
+        jBLimpiar.setEnabled(false);
+        jBModifiCua.setEnabled(false);
+        jBModifiBri.setEnabled(false);
+        jBSalir.setEnabled(true);
+
+        jRBCuartel.setEnabled(true);
+        jRBBrigada.setEnabled(true);
+        jRBBombero.setEnabled(true);
+        jRBCuartel.setSelected(false);
+        jRBBrigada.setSelected(false);
+        jRBBombero.setSelected(false);
+        borrarContenidoTabla(jTBombero);
+        borrarContenidoTabla(jTBrigada);
+        borrarContenidoTabla(jTCuartel);
+    }
+
+    public static void borrarContenidoTabla(JTable tabla) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0);
     }
 //-----------------------------------FIN INICIO---------------------------------------
 
@@ -673,8 +733,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getInt("idCuartel"),
                     rs.getString("nombreCuartel"),
                     rs.getString("direccion"),
-                    rs.getDouble("longitud"), 
-                    rs.getDouble("latitud"), 
+                    rs.getDouble("longitud"),
+                    rs.getDouble("latitud"),
                     rs.getString("telefono"),
                     rs.getString("correo")
                 };
@@ -695,6 +755,12 @@ public class ModificarView extends javax.swing.JInternalFrame {
         jTLatitud.setText("");
         jTTelefono.setText("");
         jTCorreo.setText("");
+        jTNombreBri.setText("");
+        jTDNI.setText("");
+        jTNombreBom.setText("");
+        jTGrupoSan.setText("");
+        jTNacTabla.setText("");
+        jTCelular1.setText("");
     }
     //------------------------fin limpia campos-----------------------------------
 
@@ -713,103 +779,92 @@ public class ModificarView extends javax.swing.JInternalFrame {
 //--------------------------fin llena los jtextfiel con la info de la tabla cuartel---------------------------------------------    
 
 //--------------------------actualiza los datos de la tabla con el boton modificar-------------------------------    
-    private void actualizarCuartel() {
-        double nuevaLongitud = 0.0;
-        double nuevaLatitud = 0.0;
-        try {
-            // Obtén el ID del cuartel de la fila seleccionada
-            int idCuartel = (int) jTCuartel.getValueAt(filaSeleccionada, 0);
+private void actualizarCuartel() {
+    double nuevaLongitud = 0.0;
+    double nuevaLatitud = 0.0;
+    boolean hayErrores = false; 
 
-            // Obtén los nuevos valores de los campos de texto
-            String nuevoNombre = jTNombreCua.getText();
-            String nuevaDireccion = jTDireccion.getText();
-            String textoLongitud = jTLongitud.getText();
-            String textoLatitud = jTLatitud.getText();
+    try {
+        int idCuartel = (int) jTCuartel.getValueAt(filaSeleccionada, 0);
 
-            if (!textoLongitud.isEmpty()) {
-                try {
-                    nuevaLongitud = Double.parseDouble(textoLongitud);
+        String nuevoNombre = jTNombreCua.getText();
+        String nuevaDireccion = jTDireccion.getText();
+        String textoLongitud = jTLongitud.getText();
+        String textoLatitud = jTLatitud.getText();
+        String nuevoTelefono = jTTelefono.getText();
+        String nuevoCorreo = jTCorreo.getText();
 
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud válida.");
-                    jTLongitud.setText("");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud.");
+        if (!textoLongitud.isEmpty()) {
+            try {
+                nuevaLongitud = Double.parseDouble(textoLongitud);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud válida.");
+                jTLongitud.setText("");
+                hayErrores = true; 
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud.");
+            hayErrores = true; 
+        }
 
-            if (!textoLatitud.isEmpty()) {
-                try {
-                    nuevaLatitud = Double.parseDouble(textoLatitud);
-
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud válida.");
-                    jTLatitud.setText("");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud.");
+        if (!textoLatitud.isEmpty()) {
+            try {
+                nuevaLatitud = Double.parseDouble(textoLatitud);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud válida.");
+                jTLatitud.setText("");
+                hayErrores = true; 
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud.");
+            hayErrores = true; 
+        }
 
-            String nuevoTelefono = jTTelefono.getText();
-            String nuevoCorreo = jTCorreo.getText();
-//-------------------------Validacion Cuartel-----------------------------
-            if (nuevoNombre.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-                jTNombreCua.setText("");
-                return;
-            }
+        if (nuevoNombre.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+            jTNombreCua.setText("");
+            hayErrores = true; 
+        } else if (!contieneLetras(nuevoNombre)) {
+            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+            jTNombreCua.setText("");
+            hayErrores = true; 
+        }
 
-// Validar que no contenga solo numeros
-            if (!contieneLetras(nuevoNombre)) {
-                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-                jTNombreCua.setText("");
-                return;
-            }
+        if (nuevaDireccion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección al cuartel.");
+            jTDireccion.setText("");
+            hayErrores = true; 
+        } else if (!contieneLetras(nuevaDireccion)) {
+            JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
+            jTDireccion.setText("");
+            hayErrores = true; 
+        }
 
-            if (nuevaDireccion.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-                jTDireccion.setText("");
-                return;
-            }
+        if (nuevoTelefono.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
+            jTTelefono.setText("");
+            hayErrores = true; 
+        } else if (!esNumeroValido(nuevoTelefono)) {
+            JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
+            jTTelefono.setText("");
+            hayErrores = true; 
+        }
 
-            // Validar que no contenga solo numeros
-            if (!contieneLetras(nuevaDireccion)) {
-                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-                jTDireccion.setText("");
-                return;
-            }
+        if (nuevoCorreo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
+            jTCorreo.setText("");
+            hayErrores = true; 
+        } else if (!nuevoCorreo.contains("@")) {
+            JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
+            jTCorreo.setText("");
+            hayErrores = true; 
+        }
 
-            //-------------------------Validacion Telefono Cuartel-----------------------------
-            if (nuevoTelefono.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
-                jTTelefono.setText("");
-                return;
-            }
-
-// Validar que el campo contenga solo números
-            if (!esNumeroValido(nuevoTelefono)) {
-                JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
-                jTTelefono.setText("");
-                return;
-            }
-
-//------------------------- Validacion Telefono Cuartel-----------------------------
-//-------------------------Validacion correo Cuartel-----------------------------
-            if (nuevoCorreo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
-                jTCorreo.setText("");
-                return;
-            }
-
-            if (!nuevoCorreo.contains("@")) {
-                JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
-                jTCorreo.setText("");
-                return;
-            }
-//------------------------- Validacion correo Cuartel-----------------------------
-
-//------------------------- Fin Validacion Cuartel-----------------------------
-            // Actualiza los datos en la base de datos
+        if (hayErrores) {
+            JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+            inicio1();
+        } else {
+            
             String updateQuery = "UPDATE cuartel SET nombreCuartel=?, direccion=?, longitud=?, latitud=?, telefono=?, correo=? WHERE idCuartel=?";
             try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
                 ps.setString(1, nuevoNombre);
@@ -826,13 +881,21 @@ public class ModificarView extends javax.swing.JInternalFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo actualizar la fila");
                 }
+            } catch (SQLException e) {
+                // Puedes imprimir o manejar el error de alguna otra manera aquí si lo necesitas
+                // e.printStackTrace();
+            } finally {
+                // Cerrar recursos, si es necesario
             }
-        } catch (SQLException | NumberFormatException e) {
-            e.printStackTrace();
         }
-    }
-//--------------------------fin actualiza los datos de la tabla con el boton modificar-------------------------------   
 
+    } catch (NumberFormatException e) {
+        // Puedes imprimir o manejar el error de alguna otra manera aquí si lo necesitas
+        // e.printStackTrace();
+    }
+}
+
+//--------------------------fin actualiza los datos de la tabla con el boton modificar-------------------------------   
 //--------------------dehabilita jcuartel------------------------------
     private void desCuartel() {
         jTCuartel.setEnabled(false);
@@ -868,7 +931,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
         limpiarCampos();
 
-        jRBCuartel.setEnabled(true);
+        jRBCuartel.setEnabled(false);
         jRBBrigada.setEnabled(false);
         jRBBombero.setEnabled(false);
     }
@@ -911,9 +974,8 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getInt("idBrigada"),
                     rs.getString("nombreBrig"),
                     rs.getString("especialidad"),
-                    rs.getInt("libre"), 
-                    rs.getInt("idCuartel"), 
-                };
+                    rs.getInt("libre"),
+                    rs.getInt("idCuartel"),};
                 tbrigad.addRow(fila);
             }
 
@@ -1044,7 +1106,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
                     rs.getString("dni"),
                     rs.getString("nombreApellido"),
                     rs.getString("grupoSanguineo"),
-                    fechaNacFormateada, 
+                    fechaNacFormateada,
                     rs.getString("celular"),
                     rs.getInt("idBrigada")
                 };
@@ -1069,7 +1131,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
             String fechaNacimientoStr = jTBombero.getValueAt(filaSeleccionadaBombero, 4).toString();
             String celular = jTBombero.getValueAt(filaSeleccionadaBombero, 5).toString();
 
-           
             jTDNI.setText(dni);
             jTNombreBom.setText(nombreApellido);
             jTGrupoSan.setText(grupoSanguineo);
@@ -1263,7 +1324,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
         return false;
     }
 
-    // Validar si la cadena de numero ingresado es valido
+    
     private boolean esNumeroValido(String input) {
         return input.matches("\\d+");
     }
