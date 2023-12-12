@@ -35,7 +35,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
     public ModificarView() {
         initComponents();
-//        inicio();
         cabeceraCuartel();
         cabeceraBrigadal();
         cabeceraBombero();
@@ -999,7 +998,6 @@ public class ModificarView extends javax.swing.JInternalFrame {
             int idBrigada = (int) jTBrigada.getValueAt(filaSeleccionadaBrigada, 0);
             String nuevoNombre = jTNombreBri.getText();
             boolean hayErrores = false;
-gg
             //-------------------validar nombre-------------------------------      
             if (nuevoNombre.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre a la brigada.");
