@@ -436,127 +436,127 @@ public class AgregarView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 //---------------------------------------------GUARDAR CUARTEL----------------------------------------------
     private void jBGuardarCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarCuartelActionPerformed
-    boolean hayErrores = false;
-    String nombreCuartel = jNombreCuartel.getText();
-    String direccion = jDireccionCuartel.getText();
-    double longitud=0.0, latitud=0.0;
+        boolean hayErrores = false;
+        String nombreCuartel = jNombreCuartel.getText();
+        String direccion = jDireccionCuartel.getText();
+        double longitud = 0.0, latitud = 0.0;
 
-    try {
-        longitud = Double.parseDouble(jCoordX.getText());
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        try {
+            longitud = Double.parseDouble(jCoordX.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    try {
-        latitud = Double.parseDouble(jCoordY.getText());
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        try {
+            latitud = Double.parseDouble(jCoordY.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    String telefono = jTelefonoCuartel.getText();
-    String correo = jCorreoCuartel.getText();
+        String telefono = jTelefonoCuartel.getText();
+        String correo = jCorreoCuartel.getText();
 
-    //-------------------------Validacion Nombre Cuartel-----------------------------
-    if (nombreCuartel.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        //-------------------------Validacion Nombre Cuartel-----------------------------
+        if (nombreCuartel.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    // Validar que no contenga solo números
-    if (!contieneLetras(nombreCuartel)) {
-        JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-        limpiarCampos();
-        hayErrores = true;
-    }
-    //------------------------- Fin Validacion Nombre Cuartel-----------------------------
+        // Validar que no contenga solo números
+        if (!contieneLetras(nombreCuartel)) {
+            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+        //------------------------- Fin Validacion Nombre Cuartel-----------------------------
 
-    //-------------------------Validacion Direccion Cuartel-----------------------------
-    if (direccion.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        //-------------------------Validacion Direccion Cuartel-----------------------------
+        if (direccion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    // Validar que la dirección no sea solo números
-    if (!contieneLetras(direccion)) {
-        JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
-        limpiarCampos();
-        hayErrores = true;
-    }
-    //------------------------- Fin Validacion Direccion Cuartel-----------------------------
+        // Validar que la dirección no sea solo números
+        if (!contieneLetras(direccion)) {
+            JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+        //------------------------- Fin Validacion Direccion Cuartel-----------------------------
 
-    //-------------------------Validacion Coordenada Cuartel-----------------------------
-    String textoCoordX = jCoordX.getText().trim();
-    String textoCoordY = jCoordY.getText().trim();
+        //-------------------------Validacion Coordenada Cuartel-----------------------------
+        String textoCoordX = jCoordX.getText().trim();
+        String textoCoordY = jCoordY.getText().trim();
 
-    if (textoCoordX.isEmpty() || textoCoordY.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Uno o ambos campos de coordenadas están vacíos. Por favor, ingrese valores.");
-        limpiarCampos();
-        hayErrores = true;
-    }
-    //------------------------- Validacion Coordenada Cuartel-----------------------------
+        if (textoCoordX.isEmpty() || textoCoordY.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Uno o ambos campos de coordenadas están vacíos. Por favor, ingrese valores.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+        //------------------------- Validacion Coordenada Cuartel-----------------------------
 
-    //-------------------------Validacion Telefono Cuartel-----------------------------
-    if (telefono.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        //-------------------------Validacion Telefono Cuartel-----------------------------
+        if (telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    // Validar que el campo contenga solo números
-    if (!esNumeroValido(telefono)) {
-        JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
-        limpiarCampos();
-        hayErrores = true;
-    }
-    //------------------------- Validacion Telefono Cuartel-----------------------------
+        // Validar que el campo contenga solo números
+        if (!esNumeroValido(telefono)) {
+            JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+        //------------------------- Validacion Telefono Cuartel-----------------------------
 
-    //------------------------- Validacion correo Cuartel-----------------------------
-    if (correo.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
-        limpiarCampos();
-        hayErrores = true;
-    }
+        //------------------------- Validacion correo Cuartel-----------------------------
+        if (correo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
+            limpiarCampos();
+            hayErrores = true;
+        }
 
-    if (!correo.contains("@")) {
-        JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
-        limpiarCampos();
-        hayErrores = true;
-    }
-    //------------------------- Validacion correo Cuartel-----------------------------
+        if (!correo.contains("@")) {
+            JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+        //------------------------- Validacion correo Cuartel-----------------------------
 
-    if (hayErrores) {
-        JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
-        limpiarCampos();
-        limpiarTabla(jTCuartel);
-        inicioComponentes();
-    } else {
-        if (cua.existeCuartelConNombre(nombreCuartel)) {
-            JOptionPane.showMessageDialog(null, "Ya existe un cuartel con el mismo nombre. No se puede agregar.");
+        if (hayErrores) {
+            JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
             limpiarCampos();
             limpiarTabla(jTCuartel);
             inicioComponentes();
         } else {
-            Cuartel cuar2 = new Cuartel();
-            cuar2.setNombreCuartel(nombreCuartel);
-            cuar2.setDireccion(direccion);
-            cuar2.setLongitud(longitud);
-            cuar2.setLatitud(latitud);
-            cuar2.setTelefono(telefono);
-            cuar2.setCorreo(correo);
-            cuar2.setEstadoC(true);
+            if (cua.existeCuartelConNombre(nombreCuartel)) {
+                JOptionPane.showMessageDialog(null, "Ya existe un cuartel con el mismo nombre. No se puede agregar.");
+                limpiarCampos();
+                limpiarTabla(jTCuartel);
+                inicioComponentes();
+            } else {
+                Cuartel cuar2 = new Cuartel();
+                cuar2.setNombreCuartel(nombreCuartel);
+                cuar2.setDireccion(direccion);
+                cuar2.setLongitud(longitud);
+                cuar2.setLatitud(latitud);
+                cuar2.setTelefono(telefono);
+                cuar2.setCorreo(correo);
+                cuar2.setEstadoC(true);
 
-            cua.guardarCuartel(cuar2);
-            mostrarDatosCuartel();
-            limpiarCampos();
-            inicioComponentes();
+                cua.guardarCuartel(cuar2);
+                mostrarDatosCuartel();
+                limpiarCampos();
+                inicioComponentes();
+            }
         }
-    }
 
     }//GEN-LAST:event_jBGuardarCuartelActionPerformed
 //-----------------------------------Radio Button Cuartel--------------------------------
@@ -593,18 +593,21 @@ public class AgregarView extends javax.swing.JInternalFrame {
 
 //--------------------------------------------------------------------GUARDAR BRIGADA---------------------------------------------
     private void jBGuardarBrigadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarBrigadaActionPerformed
-
         idCuartelSeleccionado = obtenerIdCuartelSeleccionado();
         CuartelIna();
+
+        boolean hayErrores = false;
+
+        
         if (briga.hayCupoParaNuevaBrigada(idCuartelSeleccionado)) {
             String nombreBrigada = jTextField1.getText();
 
-            // Verificar si el nombre de la brigada es válido
+            
             if (nombreBrigada != null && !nombreBrigada.isEmpty() && contieneLetras1(nombreBrigada)) {
-                // Verificar si el nombre de la brigada ya existe en ese cuartel
+                
                 if (briga.existeBrigadaConNombreEnCuartel(nombreBrigada, idCuartelSeleccionado)) {
                     JOptionPane.showMessageDialog(null, "Ya existe una brigada con el mismo nombre en este cuartel.");
-                    limpiarCampos();
+                    hayErrores = true;
                 } else {
                     String especialidad = (String) jCBEspecialidad.getSelectedItem();
 
@@ -618,98 +621,104 @@ public class AgregarView extends javax.swing.JInternalFrame {
                     briga.guardarBrigada(brigada);
                     JOptionPane.showMessageDialog(null, "Brigada cargada");
                     limpiarCampos();
-                    // dispose();
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "El nombre de la brigada no es válido.");
-                limpiarCampos();
+                hayErrores = true;
             }
         } else {
             JOptionPane.showMessageDialog(null, "El cuartel está completo. No se puede agregar más brigadas.");
-            limpiarCampos();
+            hayErrores = true;
         }
-        inicioComponentes();
+
+        if (hayErrores) {
+            limpiarCampos();
+            limpiarTabla(jTBrigada);
+            limpiarTabla(jTCuartel);
+            inicioComponentes();
+        }
+
 
     }//GEN-LAST:event_jBGuardarBrigadaActionPerformed
 
 //-----------------------Boton guardar Bombero-------------------------
     private void jBGuardarBomberoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarBomberoActionPerformed
-       idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
-    BrigadaIna();
-    boolean hayErrores = false;
+        idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
+        BrigadaIna();
+        boolean hayErrores = false;
 
-    if (bomb.hayCupoParaNuevoBombero(idBrigadaSeleccionada)) {
-        String dniText = jTDNI.getText();
-        String nombreApellido = jTNombre.getText();
-        String grupoSanguineo = jTGrupo.getText();
+        if (bomb.hayCupoParaNuevoBombero(idBrigadaSeleccionada)) {
+            String dniText = jTDNI.getText();
+            String nombreApellido = jTNombre.getText();
+            String grupoSanguineo = jTGrupo.getText();
 
-        // Validar DNI
-        if (!esDniValido(dniText)) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
-            limpiarCampos();
-            hayErrores = true;
-        }
+            // Validar DNI
+            if (!esDniValido(dniText)) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
+                limpiarCampos();
+                hayErrores = true;
+            }
 
-        int dni = Integer.parseInt(dniText);
+            int dni = Integer.parseInt(dniText);
 
-        // Validar nombre
-        if (nombreApellido.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
-            limpiarCampos();
-            hayErrores = true;
-        }
+            // Validar nombre
+            if (nombreApellido.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
+                limpiarCampos();
+                hayErrores = true;
+            }
 
-        // Validar grupo sanguíneo
-        if (grupoSanguineo.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
-            limpiarCampos();
-            hayErrores = true;
-        }
+            // Validar grupo sanguíneo
+            if (grupoSanguineo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
+                limpiarCampos();
+                hayErrores = true;
+            }
 
-        java.util.Date sfecha = jdFechaNacimiento.getDate();
-        LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            java.util.Date sfecha = jdFechaNacimiento.getDate();
+            LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        if (!esMayorDe18Anios(fechaNac)) {
-            JOptionPane.showMessageDialog(null, "El bombero debe ser mayor de 18 años.");
-            limpiarCampos();
-            hayErrores = true;
-        }
+            if (!esMayorDe18Anios(fechaNac)) {
+                JOptionPane.showMessageDialog(null, "El bombero debe ser mayor de 18 años.");
+                limpiarCampos();
+                hayErrores = true;
+            }
 
-        if (hayErrores) {
-            JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
-            limpiarCampos();
-            limpiarTabla(jTBrigada);
-            limpiarTabla(jTCuartel);
-            inicioComponentes();
-        } else {
-            if (bomb.existeBomberoConNombre(nombreApellido, dni)) {
-                JOptionPane.showMessageDialog(null, "Ya existe un bombero con el mismo nombre en esta brigada. No se puede agregar.");
+            if (hayErrores) {
+                JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
                 limpiarCampos();
                 limpiarTabla(jTBrigada);
                 limpiarTabla(jTCuartel);
                 inicioComponentes();
             } else {
-                String celular = jTCelular.getText();
-                Bombero bombero = new Bombero();
-                bombero.setDni(dni);
-                bombero.setNombreApellido(nombreApellido);
-                bombero.setGrupoSanguineo(grupoSanguineo);
-                bombero.setFechaNac(fechaNac);
-                bombero.setCelular(celular);
-                bombero.setEstadoB(true);
-                bombero.setIdBrigada(idBrigadaSeleccionada);
-                bomb.guardarBombero(bombero);
-                limpiarCampos();
-               limpiarTabla(jTBrigada);
-                limpiarTabla(jTCuartel);
-                inicioComponentes();
+                if (bomb.existeBomberoConNombre(nombreApellido, dni)) {
+                    JOptionPane.showMessageDialog(null, "Ya existe un bombero con el mismo nombre en esta brigada. No se puede agregar.");
+                    limpiarCampos();
+                    limpiarTabla(jTBrigada);
+                    limpiarTabla(jTCuartel);
+                    inicioComponentes();
+                } else {
+                    String celular = jTCelular.getText();
+                    Bombero bombero = new Bombero();
+                    bombero.setDni(dni);
+                    bombero.setNombreApellido(nombreApellido);
+                    bombero.setGrupoSanguineo(grupoSanguineo);
+                    bombero.setFechaNac(fechaNac);
+                    bombero.setCelular(celular);
+                    bombero.setEstadoB(true);
+                    bombero.setIdBrigada(idBrigadaSeleccionada);
+                    bomb.guardarBombero(bombero);
+                    limpiarCampos();
+                    limpiarTabla(jTBrigada);
+                    limpiarTabla(jTCuartel);
+                    inicioComponentes();
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Brigada Completa. No se puede agregar más bomberos.");
+            limpiarCampos();
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Brigada Completa. No se puede agregar más bomberos.");
-        limpiarCampos();
-    }
-    inicioComponentes();
+        inicioComponentes();
     }
 
     private boolean esDniValido(String dniText) {
@@ -1083,8 +1092,8 @@ public class AgregarView extends javax.swing.JInternalFrame {
 
 //--------------------------------------FIN DE CABECERAS DE TABLAS----------------------------------------------------------------------------------  
     private void limpiarTabla(JTable table) {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.setRowCount(0);
-}
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }
 
 }
