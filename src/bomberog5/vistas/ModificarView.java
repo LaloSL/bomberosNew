@@ -482,10 +482,17 @@ public class ModificarView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jRBCuartelActionPerformed
 //----------------------modificar brigada-------------------------------------
     private void jBModifiBriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiBriActionPerformed
-        actualizarBrigada();
-        mostrarDatosBrigada();
-        limpiarCampos();
-        inicio1();
+        if (filaSeleccionadaBrigada == -1) {
+            JOptionPane.showMessageDialog(null, "Primero debe seleccionar una brigada");
+            inicio1();
+        } else {
+            actualizarBrigada();
+            mostrarDatosBrigada();
+            limpiarCampos();
+            inicio1();
+        }
+
+
     }//GEN-LAST:event_jBModifiBriActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
@@ -495,7 +502,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
     private void jBModifiCuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiCuaActionPerformed
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(null, "Primero debe seleccionar un cuartel");
-            dispose();
+            inicio1();
         } else {
             actualizarCuartel();
             mostrarDatosCuartel();
@@ -526,10 +533,15 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
     //------------------------boton modificar bomberos--------------------------------
     private void jBModifiBombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModifiBombActionPerformed
-        actualizarBomberoConOpcionFecha();
-        mostrarDatosBomberos();
-        limpiarCampos();
-        inicio1();
+        if (filaSeleccionadaBombero == -1) {
+            JOptionPane.showMessageDialog(null, "Primero debe seleccionar un bombero");
+            inicio1();
+        } else {
+            actualizarBomberoConOpcionFecha();
+            mostrarDatosBomberos();
+            limpiarCampos();
+            inicio1();
+        }
     }//GEN-LAST:event_jBModifiBombActionPerformed
 
     private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
@@ -546,7 +558,7 @@ public class ModificarView extends javax.swing.JInternalFrame {
 
     private void jBLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimpiarActionPerformed
         limpiarCampos();
-            inicio1();
+        inicio1();
     }//GEN-LAST:event_jBLimpiarActionPerformed
 
 
@@ -779,121 +791,117 @@ public class ModificarView extends javax.swing.JInternalFrame {
 //--------------------------fin llena los jtextfiel con la info de la tabla cuartel---------------------------------------------    
 
 //--------------------------actualiza los datos de la tabla con el boton modificar-------------------------------    
-private void actualizarCuartel() {
-    double nuevaLongitud = 0.0;
-    double nuevaLatitud = 0.0;
-    boolean hayErrores = false; 
+    private void actualizarCuartel() {
+        double nuevaLongitud = 0.0;
+        double nuevaLatitud = 0.0;
+        boolean hayErrores = false;
+        try {
+            int idCuartel = (int) jTCuartel.getValueAt(filaSeleccionada, 0);
 
-    try {
-        int idCuartel = (int) jTCuartel.getValueAt(filaSeleccionada, 0);
+            String nuevoNombre = jTNombreCua.getText();
+            String nuevaDireccion = jTDireccion.getText();
+            String textoLongitud = jTLongitud.getText();
+            String textoLatitud = jTLatitud.getText();
+            String nuevoTelefono = jTTelefono.getText();
+            String nuevoCorreo = jTCorreo.getText();
 
-        String nuevoNombre = jTNombreCua.getText();
-        String nuevaDireccion = jTDireccion.getText();
-        String textoLongitud = jTLongitud.getText();
-        String textoLatitud = jTLatitud.getText();
-        String nuevoTelefono = jTTelefono.getText();
-        String nuevoCorreo = jTCorreo.getText();
-
-        if (!textoLongitud.isEmpty()) {
-            try {
-                nuevaLongitud = Double.parseDouble(textoLongitud);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud válida.");
-                jTLongitud.setText("");
-                hayErrores = true; 
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud.");
-            hayErrores = true; 
-        }
-
-        if (!textoLatitud.isEmpty()) {
-            try {
-                nuevaLatitud = Double.parseDouble(textoLatitud);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud válida.");
-                jTLatitud.setText("");
-                hayErrores = true; 
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud.");
-            hayErrores = true; 
-        }
-
-        if (nuevoNombre.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-            jTNombreCua.setText("");
-            hayErrores = true; 
-        } else if (!contieneLetras(nuevoNombre)) {
-            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-            jTNombreCua.setText("");
-            hayErrores = true; 
-        }
-
-        if (nuevaDireccion.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección al cuartel.");
-            jTDireccion.setText("");
-            hayErrores = true; 
-        } else if (!contieneLetras(nuevaDireccion)) {
-            JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
-            jTDireccion.setText("");
-            hayErrores = true; 
-        }
-
-        if (nuevoTelefono.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
-            jTTelefono.setText("");
-            hayErrores = true; 
-        } else if (!esNumeroValido(nuevoTelefono)) {
-            JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
-            jTTelefono.setText("");
-            hayErrores = true; 
-        }
-
-        if (nuevoCorreo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
-            jTCorreo.setText("");
-            hayErrores = true; 
-        } else if (!nuevoCorreo.contains("@")) {
-            JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
-            jTCorreo.setText("");
-            hayErrores = true; 
-        }
-
-        if (hayErrores) {
-            JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
-            inicio1();
-        } else {
-            
-            String updateQuery = "UPDATE cuartel SET nombreCuartel=?, direccion=?, longitud=?, latitud=?, telefono=?, correo=? WHERE idCuartel=?";
-            try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
-                ps.setString(1, nuevoNombre);
-                ps.setString(2, nuevaDireccion);
-                ps.setDouble(3, nuevaLongitud);
-                ps.setDouble(4, nuevaLatitud);
-                ps.setString(5, nuevoTelefono);
-                ps.setString(6, nuevoCorreo);
-                ps.setInt(7, idCuartel);
-
-                int filasAfectadas = ps.executeUpdate();
-                if (filasAfectadas > 0) {
-                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo actualizar la fila");
+            if (!textoLongitud.isEmpty()) {
+                try {
+                    nuevaLongitud = Double.parseDouble(textoLongitud);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud válida.");
+                    jTLongitud.setText("");
+                    hayErrores = true;
                 }
-            } catch (SQLException e) {
-                // Puedes imprimir o manejar el error de alguna otra manera aquí si lo necesitas
-                // e.printStackTrace();
-            } finally {
-                // Cerrar recursos, si es necesario
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una longitud.");
+                hayErrores = true;
             }
-        }
 
-    } catch (NumberFormatException e) {
-        // Puedes imprimir o manejar el error de alguna otra manera aquí si lo necesitas
-        // e.printStackTrace();
+            if (!textoLatitud.isEmpty()) {
+                try {
+                    nuevaLatitud = Double.parseDouble(textoLatitud);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud válida.");
+                    jTLatitud.setText("");
+                    hayErrores = true;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese una latitud.");
+                hayErrores = true;
+            }
+
+            if (nuevoNombre.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+                jTNombreCua.setText("");
+                hayErrores = true;
+            } else if (!contieneLetras(nuevoNombre)) {
+                JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+                jTNombreCua.setText("");
+                hayErrores = true;
+            }
+
+            if (nuevaDireccion.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección al cuartel.");
+                jTDireccion.setText("");
+                hayErrores = true;
+            } else if (!contieneLetras(nuevaDireccion)) {
+                JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
+                jTDireccion.setText("");
+                hayErrores = true;
+            }
+
+            if (nuevoTelefono.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
+                jTTelefono.setText("");
+                hayErrores = true;
+            } else if (!esNumeroValido(nuevoTelefono)) {
+                JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
+                jTTelefono.setText("");
+                hayErrores = true;
+            }
+
+            if (nuevoCorreo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
+                jTCorreo.setText("");
+                hayErrores = true;
+            } else if (!nuevoCorreo.contains("@")) {
+                JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
+                jTCorreo.setText("");
+                hayErrores = true;
+            }
+
+            if (hayErrores) {
+                JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+                inicio1();
+            } else {
+
+                String updateQuery = "UPDATE cuartel SET nombreCuartel=?, direccion=?, longitud=?, latitud=?, telefono=?, correo=? WHERE idCuartel=?";
+                try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
+                    ps.setString(1, nuevoNombre);
+                    ps.setString(2, nuevaDireccion);
+                    ps.setDouble(3, nuevaLongitud);
+                    ps.setDouble(4, nuevaLatitud);
+                    ps.setString(5, nuevoTelefono);
+                    ps.setString(6, nuevoCorreo);
+                    ps.setInt(7, idCuartel);
+
+                    int filasAfectadas = ps.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo actualizar la fila");
+                    }
+                } catch (SQLException e) {
+
+                }
+
+            }
+
+        } catch (NumberFormatException e) {
+
+        }
     }
-}
 
 //--------------------------fin actualiza los datos de la tabla con el boton modificar-------------------------------   
 //--------------------dehabilita jcuartel------------------------------
@@ -990,42 +998,51 @@ private void actualizarCuartel() {
         try {
             int idBrigada = (int) jTBrigada.getValueAt(filaSeleccionadaBrigada, 0);
             String nuevoNombre = jTNombreBri.getText();
+            boolean hayErrores = false;
+gg
             //-------------------validar nombre-------------------------------      
             if (nuevoNombre.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+                JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre a la brigada.");
                 jTNombreBri.setText("");
-                return;
+                hayErrores = true;
             }
 
-            // Validar que no contenga solo numeros
+            // Validar que no contenga solo números
             if (!contieneLetras(nuevoNombre)) {
                 JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
                 jTNombreBri.setText("");
-                return;
+                hayErrores = true;
             }
 
             //-------------------fin validar nombre-------------------------------     
             String nuevaEspecialidad = jComboBox1.getSelectedItem().toString();
 
-            String updateQuery = "UPDATE brigada SET nombreBrig=?, especialidad=? WHERE idBrigada=?";
-            try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
-                ps.setString(1, nuevoNombre);
-                ps.setString(2, nuevaEspecialidad);
-                ps.setInt(3, idBrigada);
+            if (hayErrores) {
+                JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+                inicio1();
+            } else {
+                String updateQuery = "UPDATE brigada SET nombreBrig=?, especialidad=? WHERE idBrigada=?";
+                try (PreparedStatement ps = con.prepareStatement(updateQuery)) {
+                    ps.setString(1, nuevoNombre);
+                    ps.setString(2, nuevaEspecialidad);
+                    ps.setInt(3, idBrigada);
 
-                int filasAfectadas = ps.executeUpdate();
-                if (filasAfectadas > 0) {
-                    JOptionPane.showMessageDialog(null, "Datos de la brigada actualizados correctamente");
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo actualizar la fila de la brigada");
+                    int filasAfectadas = ps.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        JOptionPane.showMessageDialog(null, "Datos de la brigada actualizados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo actualizar la fila de la brigada");
+                    }
+                } catch (SQLException | NumberFormatException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (SQLException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
-//-------------------------------------actualiza los datos de la brigada-----------------------------------------
 
+//-------------------------------------actualiza los datos de la brigada-----------------------------------------
 //--------------------dehabilita jbrigada------------------------------
     private void desBrigada() {
         jTBrigada.setEnabled(false);
@@ -1156,46 +1173,51 @@ private void actualizarCuartel() {
 
 //--------------fin llena los jtextFiel con los datos de la tabla bombero-----------------------------
 //-----------------------------------actualiza los datos bomberos------------------------------------
-    private void actualizarBomberoConOpcionFecha() {
-        String nuevoDNI = jTDNI.getText();
-        String nuevoNombre = jTNombreBom.getText();
-        String nuevoGrupoSanguineo = jTGrupoSan.getText();
-        String nuevoCelular = jTCelular1.getText();
+private void actualizarBomberoConOpcionFecha() {
+    String nuevoDNI = jTDNI.getText();
+    String nuevoNombre = jTNombreBom.getText();
+    String nuevoGrupoSanguineo = jTGrupoSan.getText();
+    String nuevoCelular = jTCelular1.getText();
+    boolean hayErrores = false;
 
-        //--------------------------validar campos---------------------------
-        if (!esDniValido(nuevoDNI)) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
-            jTDNI.setText("");
-            return;
-        }
+    //--------------------------validar campos---------------------------
+    if (!esDniValido(nuevoDNI)) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
+        jTDNI.setText("");
+        hayErrores = true;
+    }
 
-        // Validar nombre
-        if (nuevoNombre.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
-            jTNombreBom.setText("");
-            return;
-        }
+    // Validar nombre
+    if (nuevoNombre.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
+        jTNombreBom.setText("");
+        hayErrores = true;
+    }
 
-        // Validar grupo sanguíneo
-        if (nuevoGrupoSanguineo.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
-            jTGrupoSan.setText("");
-            return;
-        }
+    // Validar grupo sanguíneo
+    if (nuevoGrupoSanguineo.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
+        jTGrupoSan.setText("");
+        hayErrores = true;
+    }
 
-        if (nuevoCelular.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de celular.");
-            jTCelular1.setText("");
-            return;
-        }
+    if (nuevoCelular.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de celular.");
+        jTCelular1.setText("");
+        hayErrores = true;
+    }
 
-        // Validar que el campo contenga solo números
-        if (!esNumeroValido(nuevoCelular)) {
-            JOptionPane.showMessageDialog(null, "El número de celular no puede contener letras ni caracteres especiales.");
-            jTCelular1.setText("");
-            return;
-        }
+    // Validar que el campo contenga solo números
+    if (!esNumeroValido(nuevoCelular)) {
+        JOptionPane.showMessageDialog(null, "El número de celular no puede contener letras ni caracteres especiales.");
+        jTCelular1.setText("");
+        hayErrores = true;
+    }
 
+    if (hayErrores) {
+        JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+        inicio1();
+    } else {
         //--------------------------fin validar campos---------------------------
         // Validar si el JRadioButton está habilitado
         if (jRadioButton1.isSelected()) {
@@ -1255,6 +1277,7 @@ private void actualizarCuartel() {
             }
         }
     }
+}
 
 //-----------------------------------fin actualiza los datos bomberos------------------------------------
     private void habiFecha() {
@@ -1324,7 +1347,6 @@ private void actualizarCuartel() {
         return false;
     }
 
-    
     private boolean esNumeroValido(String input) {
         return input.matches("\\d+");
     }
