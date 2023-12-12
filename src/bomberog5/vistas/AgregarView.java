@@ -634,64 +634,82 @@ public class AgregarView extends javax.swing.JInternalFrame {
 
 //-----------------------Boton guardar Bombero-------------------------
     private void jBGuardarBomberoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarBomberoActionPerformed
-        idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
-        BrigadaIna();
+       idBrigadaSeleccionada = obtenerIdBrigadaSeleccionado();
+    BrigadaIna();
+    boolean hayErrores = false;
 
-        if (bomb.hayCupoParaNuevoBombero(idBrigadaSeleccionada)) {
-            String dniText = jTDNI.getText();
-            String nombreApellido = jTNombre.getText();
-            String grupoSanguineo = jTGrupo.getText();
+    if (bomb.hayCupoParaNuevoBombero(idBrigadaSeleccionada)) {
+        String dniText = jTDNI.getText();
+        String nombreApellido = jTNombre.getText();
+        String grupoSanguineo = jTGrupo.getText();
 
-            // Validar DNI
-            if (!esDniValido(dniText)) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
-                limpiarCampos();
-                return;
-            }
-
-            int dni = Integer.parseInt(dniText);
-
-            // Validar nombre
-            if (nombreApellido.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
-                limpiarCampos();
-                return;
-            }
-
-            // Validar grupo sanguíneo
-            if (grupoSanguineo.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
-                limpiarCampos();
-                return;
-            }
-
-            java.util.Date sfecha = jdFechaNacimiento.getDate();
-            LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-            if (!esMayorDe18Anios(fechaNac)) {
-                JOptionPane.showMessageDialog(null, "El bombero debe ser mayor de 18 años.");
-                limpiarCampos();
-                return;
-            }
-
-            String celular = jTCelular.getText();
-            Bombero bombero = new Bombero();
-            bombero.setDni(dni);
-            bombero.setNombreApellido(nombreApellido);
-            bombero.setGrupoSanguineo(grupoSanguineo);
-            bombero.setFechaNac(fechaNac);
-            bombero.setCelular(celular);
-            bombero.setEstadoB(true);
-            bombero.setIdBrigada(idBrigadaSeleccionada);
-            bomb.guardarBombero(bombero);
+        // Validar DNI
+        if (!esDniValido(dniText)) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
             limpiarCampos();
-            //dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Brigada Completa. No se puede agregar más bomberos.");
-            limpiarCampos();
+            hayErrores = true;
         }
-        inicioComponentes();
+
+        int dni = Integer.parseInt(dniText);
+
+        // Validar nombre
+        if (nombreApellido.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre válido.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+
+        // Validar grupo sanguíneo
+        if (grupoSanguineo.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un grupo sanguíneo válido.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+
+        java.util.Date sfecha = jdFechaNacimiento.getDate();
+        LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (!esMayorDe18Anios(fechaNac)) {
+            JOptionPane.showMessageDialog(null, "El bombero debe ser mayor de 18 años.");
+            limpiarCampos();
+            hayErrores = true;
+        }
+
+        if (hayErrores) {
+            JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+            limpiarCampos();
+            limpiarTabla(jTBrigada);
+            limpiarTabla(jTCuartel);
+            inicioComponentes();
+        } else {
+            if (bomb.existeBomberoConNombre(nombreApellido, dni)) {
+                JOptionPane.showMessageDialog(null, "Ya existe un bombero con el mismo nombre en esta brigada. No se puede agregar.");
+                limpiarCampos();
+                limpiarTabla(jTBrigada);
+                limpiarTabla(jTCuartel);
+                inicioComponentes();
+            } else {
+                String celular = jTCelular.getText();
+                Bombero bombero = new Bombero();
+                bombero.setDni(dni);
+                bombero.setNombreApellido(nombreApellido);
+                bombero.setGrupoSanguineo(grupoSanguineo);
+                bombero.setFechaNac(fechaNac);
+                bombero.setCelular(celular);
+                bombero.setEstadoB(true);
+                bombero.setIdBrigada(idBrigadaSeleccionada);
+                bomb.guardarBombero(bombero);
+                limpiarCampos();
+               limpiarTabla(jTBrigada);
+                limpiarTabla(jTCuartel);
+                inicioComponentes();
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Brigada Completa. No se puede agregar más bomberos.");
+        limpiarCampos();
+    }
+    inicioComponentes();
     }
 
     private boolean esDniValido(String dniText) {
@@ -774,7 +792,7 @@ public class AgregarView extends javax.swing.JInternalFrame {
         jCoordY.setEnabled(false);
         jTelefonoCuartel.setEnabled(false);
         jCorreoCuartel.setEnabled(false);
-        jBSalir.setEnabled(false);
+        jBSalir.setEnabled(true);
         jBGuardarCuartel.setEnabled(false);
         jBGuardarBombero.setEnabled(false);
         jBGuardarBrigada.setEnabled(false);
