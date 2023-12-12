@@ -122,43 +122,7 @@ public class CuartelData {
         return listaDistanciasCuartel;
     }
 
-//calcula distancia y retorna id cuartel del cuartel mas cercano
-//    public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro) {
-//        int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
-//        double distanciaMinima = Double.MAX_VALUE; // Inicializa con un valor muy grande
-//
-//        try {
-//
-////          
-//            String consulta = "SELECT idCuartel, longitud, latitud FROM cuartel WHERE estadoC = 1";//guille
-//
-//
-//            PreparedStatement ps = con.prepareStatement(consulta);
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                int idCuartel = rs.getInt("idCuartel");
-//                double longitudCuartel = rs.getDouble("longitud");
-//                double latitudCuartel = rs.getDouble("latitud");
-//
-//                // Calcular distancia usando la fórmula d = √((x2 - x1)² + (y2 - y1)²)
-//                double distancia = Math.sqrt(Math.pow((longitudCuartel - longitudSiniestro), 2)
-//                        + Math.pow((latitudCuartel - latitudSiniestro), 2));
-//
-//                if (distancia < distanciaMinima) {
-//                    distanciaMinima = distancia;
-//                    idCuartelMasCercano = idCuartel;
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            // Manejar la excepción según tus necesidades
-//        }
-//
-//        System.out.println("IdCuartel más cercano: " + idCuartelMasCercano + ", Distancia mínima: " + distanciaMinima);
-//        return idCuartelMasCercano;
-//    }
+
 
     public int obtenerIdCuartelMasCercano(double latitudSiniestro, double longitudSiniestro, String tipoBrigada) {
     int idCuartelMasCercano = -1; // Inicializa con un valor que no sea un id válido
@@ -202,4 +166,19 @@ public class CuartelData {
     
     
 //------------------------------------FIN ELIMINAR CUARTEL-----------------------------------------------    
+    public boolean existeCuartelConNombre(String nombreCuartel) {
+        String sql = "SELECT COUNT(*) FROM cuartel WHERE nombreCuartel = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, nombreCuartel);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true; // Ya existe un cuartel con el mismo nombre
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al verificar la existencia del cuartel.");
+        }
+        return false; // No existe un cuartel con el mismo nombre
+    }
 }

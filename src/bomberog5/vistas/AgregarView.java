@@ -436,117 +436,132 @@ public class AgregarView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 //---------------------------------------------GUARDAR CUARTEL----------------------------------------------
     private void jBGuardarCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarCuartelActionPerformed
+    boolean hayErrores = false;
+    String nombreCuartel = jNombreCuartel.getText();
+    String direccion = jDireccionCuartel.getText();
+    double longitud=0.0, latitud=0.0;
 
-        String nombreCuartel = jNombreCuartel.getText();
-        String direccion = jDireccionCuartel.getText();
-        double longitud, latitud;
-        try {
-            longitud = Double.parseDouble(jCoordX.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
-            limpiarCampos();
-            return;
-        }
-        try {
-            latitud = Double.parseDouble(jCoordY.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
-            limpiarCampos();
-            return;
-        }
-
-        String telefono = jTelefonoCuartel.getText();
-        String correo = jCorreoCuartel.getText();
-
-//-------------------------Validacion Nombre Cuartel-----------------------------
-        if (nombreCuartel.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
-            limpiarCampos();
-            return;
-        }
-
-// Validar que no contenga solo numeros
-        if (!contieneLetras(nombreCuartel)) {
-            JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
-            limpiarCampos();
-            return;
-        }
-//------------------------- Fin Validacion Nombre Cuartel-----------------------------
-
-//-------------------------Validacion Direccion Cuartel-----------------------------
-        if (direccion.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección.");
-            limpiarCampos();
-            return;
-        }
-
-// Validar que la dirección no sea solo números
-        if (!contieneLetras(direccion)) {
-            JOptionPane.showMessageDialog(null, "La direccion debe contener al menos una letra.");
-            limpiarCampos();
-            return;
-        }
-//------------------------- Fin Validacion Direccion Cuartel-----------------------------
-
-//-------------------------Validacion Coordenada Cuartel-----------------------------
-        String textoCoordX = jCoordX.getText().trim();
-
-        String textoCoordY = jCoordY.getText().trim();
-
-        if (textoCoordX.isEmpty() || textoCoordY.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Uno o ambos campos de coordenadas están vacíos. Por favor, ingrese valores.");
-            limpiarCampos();
-            return;
-        }
-//------------------------- Validacion Coordenada Cuartel-----------------------------
-
-//-------------------------Validacion Telefono Cuartel-----------------------------
-        if (telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
-            limpiarCampos();
-            return;
-        }
-
-// Validar que el campo contenga solo números
-        if (!esNumeroValido(telefono)) {
-            JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
-            limpiarCampos();
-            return;
-        }
-
-//------------------------- Validacion Telefono Cuartel-----------------------------
-//-------------------------Validacion correo Cuartel-----------------------------
-        if (correo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
-            limpiarCampos();
-            return;
-        }
-
-        if (!correo.contains("@")) {
-            JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
-            limpiarCampos();
-            return;
-        }
-//------------------------- Validacion correo Cuartel-----------------------------
-
-        Cuartel cuar2 = new Cuartel();
-        cuar2.setNombreCuartel(nombreCuartel);
-        cuar2.setDireccion(direccion);
-        cuar2.setLongitud(longitud);
-        cuar2.setLatitud(latitud);
-        cuar2.setTelefono(telefono);
-        cuar2.setCorreo(correo);
-        cuar2.setEstadoC(true);
-
-        cua.guardarCuartel(cuar2);
+    try {
+        longitud = Double.parseDouble(jCoordX.getText());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
         limpiarCampos();
+        hayErrores = true;
+    }
 
+    try {
+        latitud = Double.parseDouble(jCoordY.getText());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Ingrese valores numéricos válidos en los campos de coordenadas.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+
+    String telefono = jTelefonoCuartel.getText();
+    String correo = jCorreoCuartel.getText();
+
+    //-------------------------Validacion Nombre Cuartel-----------------------------
+    if (nombreCuartel.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un nombre al cuartel.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+
+    // Validar que no contenga solo números
+    if (!contieneLetras(nombreCuartel)) {
+        JOptionPane.showMessageDialog(null, "El nombre debe contener al menos una letra.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+    //------------------------- Fin Validacion Nombre Cuartel-----------------------------
+
+    //-------------------------Validacion Direccion Cuartel-----------------------------
+    if (direccion.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+
+    // Validar que la dirección no sea solo números
+    if (!contieneLetras(direccion)) {
+        JOptionPane.showMessageDialog(null, "La dirección debe contener al menos una letra.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+    //------------------------- Fin Validacion Direccion Cuartel-----------------------------
+
+    //-------------------------Validacion Coordenada Cuartel-----------------------------
+    String textoCoordX = jCoordX.getText().trim();
+    String textoCoordY = jCoordY.getText().trim();
+
+    if (textoCoordX.isEmpty() || textoCoordY.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Uno o ambos campos de coordenadas están vacíos. Por favor, ingrese valores.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+    //------------------------- Validacion Coordenada Cuartel-----------------------------
+
+    //-------------------------Validacion Telefono Cuartel-----------------------------
+    if (telefono.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese un número de teléfono.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+
+    // Validar que el campo contenga solo números
+    if (!esNumeroValido(telefono)) {
+        JOptionPane.showMessageDialog(null, "El número de teléfono no puede contener letras ni caracteres especiales.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+    //------------------------- Validacion Telefono Cuartel-----------------------------
+
+    //------------------------- Validacion correo Cuartel-----------------------------
+    if (correo.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campo vacío. Por favor, ingrese una dirección de correo.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+
+    if (!correo.contains("@")) {
+        JOptionPane.showMessageDialog(null, "La dirección de correo no es válida. Debe contener el carácter '@'.");
+        limpiarCampos();
+        hayErrores = true;
+    }
+    //------------------------- Validacion correo Cuartel-----------------------------
+
+    if (hayErrores) {
+        JOptionPane.showMessageDialog(null, "Algun campo no cumple con los requisitos, vuelva a empezar");
+        limpiarCampos();
+        limpiarTabla(jTCuartel);
         inicioComponentes();
-        //dispose();
+    } else {
+        if (cua.existeCuartelConNombre(nombreCuartel)) {
+            JOptionPane.showMessageDialog(null, "Ya existe un cuartel con el mismo nombre. No se puede agregar.");
+            limpiarCampos();
+            limpiarTabla(jTCuartel);
+            inicioComponentes();
+        } else {
+            Cuartel cuar2 = new Cuartel();
+            cuar2.setNombreCuartel(nombreCuartel);
+            cuar2.setDireccion(direccion);
+            cuar2.setLongitud(longitud);
+            cuar2.setLatitud(latitud);
+            cuar2.setTelefono(telefono);
+            cuar2.setCorreo(correo);
+            cuar2.setEstadoC(true);
+
+            cua.guardarCuartel(cuar2);
+            mostrarDatosCuartel();
+            limpiarCampos();
+            inicioComponentes();
+        }
+    }
 
     }//GEN-LAST:event_jBGuardarCuartelActionPerformed
 //-----------------------------------Radio Button Cuartel--------------------------------
     private void jRBCuartelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBCuartelActionPerformed
+        mostrarDatosCuartel();
         radioButtonCuartel();
     }//GEN-LAST:event_jRBCuartelActionPerformed
 
@@ -1048,5 +1063,10 @@ public class AgregarView extends javax.swing.JInternalFrame {
     }
     //--------------Fin inhabilita la tabla brigada-------------------------------    
 
-//--------------------------------------FIN DE CABECERAS DE TABLAS----------------------------------------------------------------------------------    
+//--------------------------------------FIN DE CABECERAS DE TABLAS----------------------------------------------------------------------------------  
+    private void limpiarTabla(JTable table) {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    model.setRowCount(0);
+}
+
 }
